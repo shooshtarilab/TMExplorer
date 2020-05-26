@@ -65,7 +65,7 @@ queryTME <- function(geo_accession=NULL,
             #download the data into dataframes
             if (df[row,'expression_link'] != ''){
                 filename = tempfile()
-                download.file(df[row,'expression_link'], destfile=filename)
+                download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
                 expression<- read.csv(filename, sep='\t')
                 #expression <- read.csv(df[row,'expression_link'], fileEncoding="latin1" sep='\t')
             } else {
@@ -73,7 +73,7 @@ queryTME <- function(geo_accession=NULL,
             }
             if (df[row,'truth_label_link'] != ''){
                 filename = tempfile()
-                download.file(df[row,'truth_label_link'], destfile=filename)
+                download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
                 labels <- read.csv(filename)
                 #labels <- read.csv(df[row,'truth_label_link'], fileEncoding="latin1" sep='\t')
             } else {
@@ -81,7 +81,7 @@ queryTME <- function(geo_accession=NULL,
             }
             if (df[row,'signature_link'] != ''){
                 filename = tempfile()
-                download.file(df[row,'signature_link'], destfile=filename)
+                download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
                 sigs <- read.csv(filename)
                 #sigs <- read.csv(df[row, 'signature_link'], fileEncoding="latin1" sep='\t')
             } else {
