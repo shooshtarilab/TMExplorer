@@ -61,54 +61,43 @@ queryTME <- function(geo_accession=NULL,
         df_list <- list()
         for (row in 1:nrow(df)){
             geo <- df[row, 'accession']
-            if (geo == 'GSE72056') {
-                data('GSE572056_expression')
-                data('GSE572056_labels')
-                data('GSE572056_signatures')
-                tme_dataset <- tme_data$new(expression = GSE572056_expression,
-                                         labels = GSE572056_labels,
-                                         signatures= GSE572056_signatures,
-                                         pmid = df[row, 'PMID'],
-                                         technology = df[row, 'Technology'],
-                                         score_type = df[row, 'score_type'], 
-                                         organism  = df[row, 'Organism'],
-                                         author = df[row, 'author'],
-                                         tumour_type = df[row, 'tumor_type'],
-                                         patients = df[row, 'patients'],
-                                         tumours  = df[row, 'tumours'],
-                                         cells = df[row, 'cells'],
-                                         genes = df[row, 'genes'],
-                                         geo_accession = geo)
- 
-            } else {
-                expression <- paste('../data/',geo, '_expression.rda', sep='')
-                labels <- paste('../data/',geo, 'labels', sep='')
-                sigs <- paste('../data/',geo, 'signatures', sep='')
-                #data(expression)
-                #data(labels)
-                #data(sigs)
 
-                #TODO how to load the actual data from the data directory??
-                tme_dataset <- tme_data$new(expression = data.frame(),
-                                            labels = data.frame(),
-                                            signatures= data.frame(),
-                                            pmid = df[row, 'PMID'],
-                                            technology = df[row, 'Technology'],
-                                            score_type = df[row, 'score_type'], 
-                                            organism  = df[row, 'Organism'],
-                                            author = df[row, 'author'],
-                                            tumour_type = df[row, 'tumor_type'],
-                                            patients = df[row, 'patients'],
-                                            tumours  = df[row, 'tumours'],
-                                            cells = df[row, 'cells'],
-                                            genes = df[row, 'genes'],
-                                            geo_accession = geo)
- 
+            #download the data into dataframes
+            if (df[row,'expression_link'] != ''){
+                expression <- read.csv(df[row,'expression_link'], sep='\t')
+            } else {
+                expression <- data.frame()
             }
+            if (df[row,'truth_label_link'] != ''){
+                labels <- read.csv(df[row,'truth_label_link'])
+            } else {
+                labels <- data.frame()
+            }
+            if (df[row,'signature_link'] != ''){
+                sigs <- read.csv(df[row, 'signature_link'])
+            } else {
+                sigs <- data.frame()
+            }
+
+            tme_dataset <- tme_data$new(expression = expression,
+                                        labels = labels,
+                                        signatures = sigs,
+                                        pmid = df[row, 'PMID'],
+                                        technology = df[row, 'Technology'],
+                                        score_type = df[row, 'score_type'], 
+                                        organism  = df[row, 'Organism'],
+                                        author = df[row, 'author'],
+                                        tumour_type = df[row, 'tumor_type'],
+                                        patients = df[row, 'patients'],
+                                        tumours  = df[row, 'tumours'],
+                                        cells = df[row, 'cells'],
+                                        genes = df[row, 'genes'],
+                                        geo_accession = geo)
+ 
+            
             df_list[[row]] <- tme_dataset
 
         }
-        # load and return dataset (store as accession.rda for now?)
         return(df_list)
     }
 
