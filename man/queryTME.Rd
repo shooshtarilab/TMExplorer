@@ -10,11 +10,37 @@ queryTME(
   has_signatures = NULL,
   has_truth = NULL,
   tumour_type = NULL,
+  author = NULL,
+  journal = NULL,
+  year = NULL,
+  pmid = NULL,
+  sequence_tech = NULL,
+  organism = NULL,
   metadata_only = FALSE
 )
 }
 \arguments{
 \item{geo_accession}{Search by geo accession number}
+
+\item{score_type}{Search by type of score (TPM, FPKM, raw count)}
+
+\item{has_signatures}{Return datasets that have gene signatures available (TRUE/FALSE)}
+
+\item{has_truth}{Search by the presence of known cell-type labels}
+
+\item{tumour_type}{Search by type of tumour contained in the dataset}
+
+\item{author}{Search by author}
+
+\item{journal}{Search by journal}
+
+\item{year}{Search by year}
+
+\item{pmid}{Search by Pubmed ID}
+
+\item{sequence_tech}{Search by sequencing technology}
+
+\item{organism}{Search by source organism}
 
 \item{metadata_only}{Return rows of metadata instead of actual datasets. Defaults to FALSE}
 }

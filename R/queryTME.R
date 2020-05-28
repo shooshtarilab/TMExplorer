@@ -18,6 +18,16 @@ tme_data <- setRefClass("tme_data",
 #'
 #' This function allows you to search and subset included TME datasets
 #' @param geo_accession Search by geo accession number
+#' @param score_type Search by type of score (TPM, FPKM, raw count)
+#' @param has_signatures Return datasets that have gene signatures available (TRUE/FALSE)
+#' @param has_truth Search by the presence of known cell-type labels
+#' @param tumour_type Search by type of tumour contained in the dataset
+#' @param author Search by author
+#' @param journal Search by journal
+#' @param year Search by year
+#' @param pmid Search by Pubmed ID
+#' @param sequence_tech Search by sequencing technology
+#' @param organism Search by source organism
 #' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
 #' @keywords tumour
 #' @export
@@ -25,24 +35,32 @@ tme_data <- setRefClass("tme_data",
 #' queryTME
 
 queryTME <- function(geo_accession=NULL,
-                       score_type=NULL,
-                       has_signatures=NULL,
-                       has_truth=NULL,
-                       tumour_type=NULL,
-                       metadata_only=FALSE){
+                     score_type=NULL,
+                     has_signatures=NULL,
+                     has_truth=NULL,
+                     tumour_type=NULL,
+                     author=NULL, #TODO
+                     journal=NULL, #TODO
+                     year=NULL, #TODO
+                     pmid=NULL, #TODO
+                     sequence_tech=NULL, #TODO
+                     organism=NULL,
+                     metadata_only=FALSE){
     data("tme_meta")
     df = tme_meta
     if (!is.null(geo_accession)) {
+        #TODO what to do for datasets that aren't in GEO
         df <- df[df$accession == geo_accession,]
     }
     if (!is.null(score_type)) {
+        #TODO what to do for datasets with multiple score types available?
         df <- df[df$score_type == score_type ,]
     }
     if (!is.null(has_signatures)) {
         if (has_signatures) {
-            df <- df[df$signatures == 't' ,]
+            df <- df[df$signatures == 'Y' ,]
         }else if (!has_signatures) {
-            df <- df[df$signatures == 'f' ,]
+            df <- df[df$signatures == 'N' ,]
         }
     }
     if (!is.null(has_truth)) {
@@ -55,7 +73,28 @@ queryTME <- function(geo_accession=NULL,
     if (!is.null(tumour_type)) {
         df <- df[df$tumour_type == tumour_type,]
     }
+    if (!is.null(author)) {
+        df <- df[df$author == author,]
+    }
+    if (!is.null(journal)) {
+        df <- df[df$journal == journal,]
+    }
+    if (!is.null(year)) {
+        #TODO should we be able to search year ranges?
+        df <- df[df$year == year,]
+    }
+    if (!is.null(pmid)) {
+        df <- df[df$PMID == pmid,]
+    }
+    if (!is.null(sequence_tech)) {
+        df <- df[df$Technology == sequence_tech,]
+    }
+    if (!is.null(organism)) {
+        #TODO what to do for multiple organisms?
+        df <- df[df$Organism == organism,]
+    }
     if (metadata_only) {
+        df[,c('signature_link', 'expression_link', 'truth_label_link')] <- list(NULL)
         return(list(df))
     } else {
         df_list <- list()
