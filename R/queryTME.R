@@ -61,28 +61,35 @@ queryTME <- function(geo_accession=NULL,
         df_list <- list()
         for (row in 1:nrow(df)){
             geo <- df[row, 'accession']
+            #print(geo)
 
             #download the data into dataframes
             if (df[row,'expression_link'] != ''){
+                #print('expression')
                 filename = tempfile()
                 download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
-                expression<- read.csv(filename, sep='\t')
+                #expression<- read.csv(filename, sep='\t')
+                expression<- readRDS(filename)
                 #expression <- read.csv(df[row,'expression_link'], fileEncoding="latin1" sep='\t')
             } else {
                 expression <- data.frame()
             }
             if (df[row,'truth_label_link'] != ''){
+                #print('labels')
                 filename = tempfile()
                 download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
-                labels <- read.csv(filename)
+                labels<- readRDS(filename)
+                #labels <- read.csv(filename)
                 #labels <- read.csv(df[row,'truth_label_link'], fileEncoding="latin1" sep='\t')
             } else {
                 labels <- data.frame()
             }
             if (df[row,'signature_link'] != ''){
+                #print('signatures')
                 filename = tempfile()
                 download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
-                sigs <- read.csv(filename)
+                sigs<- readRDS(filename)
+                #sigs <- read.csv(filename)
                 #sigs <- read.csv(df[row, 'signature_link'], fileEncoding="latin1" sep='\t')
             } else {
                 sigs <- data.frame()
