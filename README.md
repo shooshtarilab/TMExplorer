@@ -56,6 +56,8 @@ This will return a list of all datasets that have true cell-types available. You
 
 `View(res[[1]]$labels)`
 
+![Screenshot of the cell type labels](docs/GSE72056_labels.png)
+
 The first column of this dataframe contains the cell barcode, and the second contains the cell type. 
 
 ### Example: Returning all datasets with cell-type labels and cell-type gene signatures
@@ -63,3 +65,5 @@ The first column of this dataframe contains the cell barcode, and the second con
 Some cell-type classification methods require a list of gene signatures, to return only datasets that have cell-type gene signatures available, use:
 
 `res = queryTME(has_truth = TRUE, has_signatures = TRUE)`
+
+![Screenshot of the cell type gene signatures](docs/GSE72056_signatures.png)
