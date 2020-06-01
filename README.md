@@ -19,11 +19,13 @@ Start by exploring the available datasets through metadata.
 
 This will return a list containing a single dataframe of metadata for all available datasets. View the metadata with `View(res[[1]])` and then check `?queryTME` for a description of searchable fields.
 
+![Screenshot of the metadata table](docs/metadata.png)
+
 ### Getting your first dataset
 
 Once you've found a field to search on, you can get your data. 
 
-`res = queryTME(geo_accession = GSE72056)`
+`res = queryTME(geo_accession = "GSE72056")`
 
 This will return a list containing dataset GSE72056. The dataset is stored as a `tme_data` object, which has the following attributes:
 
