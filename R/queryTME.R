@@ -54,7 +54,7 @@ queryTME <- function(geo_accession=NULL,
     }
     if (!is.null(score_type)) {
         #TODO what to do for datasets with multiple score types available?
-        df <- df[df$score_type == score_type ,]
+        df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
     if (!is.null(has_signatures)) {
         if (has_signatures) {
@@ -71,13 +71,13 @@ queryTME <- function(geo_accession=NULL,
         }
     }
     if (!is.null(tumour_type)) {
-        df <- df[df$tumour_type == tumour_type,]
+        df <- df[toupper(df$tumor_type) == toupper(tumour_type),]
     }
     if (!is.null(author)) {
-        df <- df[df$author == author,]
+        df <- df[toupper(df$author) == toupper(author),]
     }
     if (!is.null(journal)) {
-        df <- df[df$journal == journal,]
+        df <- df[toupper(df$journal) == toupper(journal),]
     }
     if (!is.null(year)) {
         #TODO should we be able to search year ranges?
@@ -87,11 +87,11 @@ queryTME <- function(geo_accession=NULL,
         df <- df[df$PMID == pmid,]
     }
     if (!is.null(sequence_tech)) {
-        df <- df[df$Technology == sequence_tech,]
+        df <- df[toupper(df$Technology) == toupper(sequence_tech),]
     }
     if (!is.null(organism)) {
         #TODO what to do for multiple organisms?
-        df <- df[df$Organism == organism,]
+        df <- df[toupper(df$Organism) == toupper(organism),]
     }
     if (metadata_only) {
         df[,c('signature_link', 'expression_link', 'truth_label_link')] <- list(NULL)
