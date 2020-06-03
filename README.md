@@ -60,7 +60,7 @@ This will return a list containing dataset GSE72056. The dataset is stored as a 
 
 | Attribute     | Description |
 | ------------- | ------------- |
-| expression    | A `data.frame` containing genes x cells  |
+| expression    | A `data.frame` or `matrix` containing genes x cells  |
 | labels        | A `data.frame` containing a list of cell barcodes and their true cell-types |
 | signatures    | A `data.frame` containing the cell types and a list of genes that represent that cell type |
 | cells         | A list of cells included in the study |
