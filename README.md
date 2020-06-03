@@ -28,9 +28,25 @@ Note: in order to keep the function's interface consistent, `queryTME` always re
 The `metatadata_only` argument can be applied alongside any other argument in order to examine only datasets that have certain qualities. You can, for instance, view only breast cancer datasets by using 
 
 ```
-res = queryTME(tumour_type = 'Breast cancer', metadata_only = TRUE)
+res = queryTME(tumour_type = 'Breast cancer', metadata_only = TRUE)[[1]]
 ```
-#### TODO add screenshot
+
+![Screenshot of the metadata table](docs/bc_metadata.png)
+
+| Search Parameter | Description                                     | Examples                |
+| ---------------- | ----------------------------------------------- | ----------------------- |
+| geo_accession    | Search by GEO accession number                  | GSE72056, GSE57872      |
+| score_type       | Search by type of score shown in $expression    | TPM, RPKM, FPKM         |
+| has_signatures   | Filter by presence of cell-type gene signatures | TRUE, FALSE             |
+| has_truth        | Filter by presence of cell-type labels          | TRUE, FALSE             |
+| tumour_type      | Search by tumour type                           | Breast cancer, Melanoma |
+| author           | Search by first author                          | Patel, Tirosh, Chung    |
+| journal          | Search by publication journal                   | Science, Nature, Cell   |
+| year             | Search by year of publication                   |                         |
+| pmid             | Search by publication ID                        | 24925914, 27124452      |
+| sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  |
+| organism         | Search by source organism                       | Human, Mice             |
+
 
 ### Getting your first dataset
 
@@ -41,8 +57,6 @@ res = queryTME(geo_accession = "GSE72056")
 ```
 
 This will return a list containing dataset GSE72056. The dataset is stored as a `tme_data` object, which has the following attributes:
-
-#### TODO add screenshot
 
 | Attribute     | Description |
 | ------------- | ------------- |
@@ -60,6 +74,13 @@ This will return a list containing dataset GSE72056. The dataset is stored as a 
 | patients      | The number of patients included in the study |
 | tumours       | The number of tumours sampled by the study |
 | geo_accession | The GEO accession ID for the dataset |
+
+To view the gene expression data for this dataset use this:
+```
+View(res[[1]]$expression)
+```
+![Screenshot of the metadata table](docs/GSE72056_expression.png)
+
 
 ### Example: Returning all datasets with cell-type labels
 
