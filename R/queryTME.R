@@ -10,8 +10,8 @@ tme_data <- setRefClass("tme_data",
                         tumour_type = "character",
                         patients = "numeric",
                         tumours = "numeric",
-                        cells = "numeric",
-                        genes = "numeric",
+                        cells = "character",
+                        genes = "character",
                         geo_accession = "character"))
 
 #' A function to query TME datasets available in this package
@@ -145,8 +145,11 @@ queryTME <- function(geo_accession=NULL,
                                         tumour_type = df[row, 'tumor_type'],
                                         patients = df[row, 'patients'],
                                         tumours  = df[row, 'tumours'],
-                                        cells = df[row, 'cells'],
-                                        genes = df[row, 'genes'],
+                                        cells = colnames(expression)[-1],
+                                        #TODO maybe figure out how to make this a dataframe with the 
+                                        #first few columns if a dataset has multiple identifiers for
+                                        #each gene
+                                        genes = expression[[1]],
                                         geo_accession = geo)
  
             
