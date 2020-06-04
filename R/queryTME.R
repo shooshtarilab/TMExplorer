@@ -81,7 +81,19 @@ queryTME <- function(geo_accession=NULL,
     }
     if (!is.null(year)) {
         #TODO should we be able to search year ranges?
-        df <- df[df$year == year,]
+        #df <- df[df$year == year,]
+        if (grepl('>',year,fixed=TRUE)){
+            year = sub('>','',year)
+            df <- df[df$year>=year,]
+        }else if (grepl('-',year,fixed=TRUE)){
+            year = strsplit(year,'-')[[1]]
+            df <- df[df$year>=year[[1]]&df$year<=year[[2]],]
+        }else if (grepl('<',year,fixed=TRUE)){
+            year = sub('<','',year)
+            df <- df[df$year<=year,]
+        }else{
+            df <- df[df$year==year,]
+        }
     }
     if (!is.null(pmid)) {
         df <- df[df$PMID == pmid,]
@@ -90,7 +102,6 @@ queryTME <- function(geo_accession=NULL,
         df <- df[toupper(df$Technology) == toupper(sequence_tech),]
     }
     if (!is.null(organism)) {
-        #TODO what to do for multiple organisms?
         df <- df[toupper(df$Organism) == toupper(organism),]
     }
     if (metadata_only) {
