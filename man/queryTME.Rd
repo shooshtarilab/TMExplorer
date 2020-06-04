@@ -34,7 +34,7 @@ queryTME(
 
 \item{journal}{Search by journal}
 
-\item{year}{Search by year}
+\item{year}{Search by exact year or year ranges with '<', '>', or '-'}
 
 \item{pmid}{Search by Pubmed ID}
 

@@ -24,7 +24,7 @@ tme_data <- setRefClass("tme_data",
 #' @param tumour_type Search by type of tumour contained in the dataset
 #' @param author Search by author
 #' @param journal Search by journal
-#' @param year Search by year
+#' @param year Search by exact year or year ranges with '<', '>', or '-'
 #' @param pmid Search by Pubmed ID
 #' @param sequence_tech Search by sequencing technology
 #' @param organism Search by source organism
@@ -82,15 +82,25 @@ queryTME <- function(geo_accession=NULL,
     if (!is.null(year)) {
         #TODO should we be able to search year ranges?
         #df <- df[df$year == year,]
-        if (grepl('>',year,fixed=TRUE)){
+        year = gsub(' ', '', year)
+        #check greater than
+        if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>',year)[[1]][[1]]==1){
             year = sub('>','',year)
+            year = sub('<','',year)
             df <- df[df$year>=year,]
+        
+        #check between
         }else if (grepl('-',year,fixed=TRUE)){
             year = strsplit(year,'-')[[1]]
             df <- df[df$year>=year[[1]]&df$year<=year[[2]],]
-        }else if (grepl('<',year,fixed=TRUE)){
+        
+        #check less than
+        }else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<',year)[[1]][[1]]==1){
+            year = sub('>','',year)
             year = sub('<','',year)
             df <- df[df$year<=year,]
+        
+        #check equals
         }else{
             df <- df[df$year==year,]
         }
