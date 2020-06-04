@@ -47,6 +47,10 @@ res = queryTME(tumour_type = 'Breast cancer', metadata_only = TRUE)[[1]]
 | sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  |
 | organism         | Search by source organism                       | Human, Mice             |
 
+#### Searching by year
+
+In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' or '2015>' will search for datasets published before or in 2015. '>2015' or '2015<' will search for datasets published in or after 2015.
+
 
 ### Getting your first dataset
 
