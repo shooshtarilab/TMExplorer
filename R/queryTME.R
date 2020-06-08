@@ -30,6 +30,7 @@ tme_data <- setRefClass("tme_data",
 #' @param organism Search by source organism
 #' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
 #' @keywords tumour
+#' @importFrom methods new
 #' @export
 #' @examples
 #' queryTME
@@ -46,7 +47,7 @@ queryTME <- function(geo_accession=NULL,
                      sequence_tech=NULL, #TODO
                      organism=NULL,
                      metadata_only=FALSE){
-    data("tme_meta")
+    #data("tme_meta")
     df = tme_meta
     if (!is.null(geo_accession)) {
         #TODO what to do for datasets that aren't in GEO
@@ -127,7 +128,7 @@ queryTME <- function(geo_accession=NULL,
             if (df[row,'expression_link'] != ''){
                 #print('expression')
                 filename = tempfile()
-                download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
+                utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
                 #expression<- read.csv(filename, sep='\t')
                 expression<- readRDS(filename)
                 #expression <- read.csv(df[row,'expression_link'], fileEncoding="latin1" sep='\t')
@@ -137,7 +138,7 @@ queryTME <- function(geo_accession=NULL,
             if (df[row,'truth_label_link'] != ''){
                 #print('labels')
                 filename = tempfile()
-                download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
+                utils::download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
                 labels<- readRDS(filename)
                 #labels <- read.csv(filename)
                 #labels <- read.csv(df[row,'truth_label_link'], fileEncoding="latin1" sep='\t')
@@ -147,7 +148,7 @@ queryTME <- function(geo_accession=NULL,
             if (df[row,'signature_link'] != ''){
                 #print('signatures')
                 filename = tempfile()
-                download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
+                utils::download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
                 sigs<- readRDS(filename)
                 #sigs <- read.csv(filename)
                 #sigs <- read.csv(df[row, 'signature_link'], fileEncoding="latin1" sep='\t')
@@ -155,23 +156,24 @@ queryTME <- function(geo_accession=NULL,
                 sigs <- data.frame()
             }
 
-            tme_dataset <- tme_data$new(expression = expression,
-                                        labels = labels,
-                                        signatures = sigs,
-                                        pmid = df[row, 'PMID'],
-                                        technology = df[row, 'Technology'],
-                                        score_type = df[row, 'score_type'], 
-                                        organism  = df[row, 'Organism'],
-                                        author = df[row, 'author'],
-                                        tumour_type = df[row, 'tumor_type'],
-                                        patients = df[row, 'patients'],
-                                        tumours  = df[row, 'tumours'],
-                                        cells = colnames(expression)[-1],
-                                        #TODO maybe figure out how to make this a dataframe with the 
-                                        #first few columns if a dataset has multiple identifiers for
-                                        #each gene
-                                        genes = expression[[1]],
-                                        geo_accession = geo)
+            tme_dataset <- methods::new("tme_data",
+                               expression = expression,
+                               labels = labels,
+                               signatures = sigs,
+                               pmid = df[row, 'PMID'],
+                               technology = df[row, 'Technology'],
+                               score_type = df[row, 'score_type'], 
+                               organism  = df[row, 'Organism'],
+                               author = df[row, 'author'],
+                               tumour_type = df[row, 'tumor_type'],
+                               patients = df[row, 'patients'],
+                               tumours  = df[row, 'tumours'],
+                               cells = colnames(expression)[-1],
+                               #TODO maybe figure out how to make this a dataframe with the 
+                               #first few columns if a dataset has multiple identifiers for
+                               #each gene
+                               genes = expression[[1]],
+                               geo_accession = geo)
  
             
             df_list[[row]] <- tme_dataset
