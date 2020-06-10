@@ -158,7 +158,7 @@ queryTME <- function(geo_accession=NULL,
                                 #TODO maybe figure out how to make this a dataframe with the 
                                 #first few columns if a dataset has multiple identifiers for
                                 #each gene
-                                genes = expression[[1]],
+                                genes = expression[,1],
                                 geo_accession = geo)
             class(tme_dataset) <- "tme_data"
  
