@@ -13,6 +13,7 @@
 #' @param sequence_tech Search by sequencing technology
 #' @param organism Search by source organism
 #' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
+#' @param sparse Return expression as a sparse matrix. Uses less memory but is less convenient to view. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
 #' @export
@@ -30,7 +31,8 @@ queryTME <- function(geo_accession=NULL,
                      pmid=NULL, #TODO
                      sequence_tech=NULL, #TODO
                      organism=NULL,
-                     metadata_only=FALSE){
+                     metadata_only=FALSE,
+                     sparse = FALSE){
     #data("tme_meta")
     df = tme_meta
     if (!is.null(geo_accession)) {
@@ -110,12 +112,13 @@ queryTME <- function(geo_accession=NULL,
 
             #download the data into dataframes
             if (df[row,'expression_link'] != ''){
-                #print('expression')
                 filename = tempfile()
                 utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
-                #expression<- read.csv(filename, sep='\t')
-                expression<- readRDS(filename)
-                #expression <- read.csv(df[row,'expression_link'], fileEncoding="latin1" sep='\t')
+                if (sparse==FALSE){
+                    expression <- as.matrix(readRDS(filename))
+                } else {
+                    expression <- readRDS(filename)
+                }
             } else {
                 expression <- NULL
             }
