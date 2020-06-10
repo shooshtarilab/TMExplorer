@@ -1,19 +1,3 @@
-tme_data <- setRefClass("tme_data",
-                        fields = list(expression = "data.frame",
-                        labels = "data.frame",
-                        signatures = "data.frame",
-                        pmid = "numeric",
-                        technology = "character",
-                        score_type = "character",
-                        organism = "character",
-                        author = "character",
-                        tumour_type = "character",
-                        patients = "numeric",
-                        tumours = "numeric",
-                        cells = "character",
-                        genes = "character",
-                        geo_accession = "character"))
-
 #' A function to query TME datasets available in this package
 #'
 #' This function allows you to search and subset included TME datasets
@@ -133,7 +117,7 @@ queryTME <- function(geo_accession=NULL,
                 expression<- readRDS(filename)
                 #expression <- read.csv(df[row,'expression_link'], fileEncoding="latin1" sep='\t')
             } else {
-                expression <- data.frame()
+                expression <- NULL
             }
             if (df[row,'truth_label_link'] != ''){
                 #print('labels')
@@ -143,7 +127,7 @@ queryTME <- function(geo_accession=NULL,
                 #labels <- read.csv(filename)
                 #labels <- read.csv(df[row,'truth_label_link'], fileEncoding="latin1" sep='\t')
             } else {
-                labels <- data.frame()
+                labels <- NULL
             }
             if (df[row,'signature_link'] != ''){
                 #print('signatures')
@@ -153,27 +137,27 @@ queryTME <- function(geo_accession=NULL,
                 #sigs <- read.csv(filename)
                 #sigs <- read.csv(df[row, 'signature_link'], fileEncoding="latin1" sep='\t')
             } else {
-                sigs <- data.frame()
+                sigs <- NULL
             }
 
-            tme_dataset <- methods::new("tme_data",
-                               expression = expression,
-                               labels = labels,
-                               signatures = sigs,
-                               pmid = df[row, 'PMID'],
-                               technology = df[row, 'Technology'],
-                               score_type = df[row, 'score_type'], 
-                               organism  = df[row, 'Organism'],
-                               author = df[row, 'author'],
-                               tumour_type = df[row, 'tumor_type'],
-                               patients = df[row, 'patients'],
-                               tumours  = df[row, 'tumours'],
-                               cells = colnames(expression)[-1],
-                               #TODO maybe figure out how to make this a dataframe with the 
-                               #first few columns if a dataset has multiple identifiers for
-                               #each gene
-                               genes = expression[[1]],
-                               geo_accession = geo)
+            tme_dataset <- list(expression = expression,
+                                labels = labels,
+                                signatures = sigs,
+                                pmid = df[row, 'PMID'],
+                                technology = df[row, 'Technology'],
+                                score_type = df[row, 'score_type'], 
+                                organism  = df[row, 'Organism'],
+                                author = df[row, 'author'],
+                                tumour_type = df[row, 'tumor_type'],
+                                patients = df[row, 'patients'],
+                                tumours  = df[row, 'tumours'],
+                                cells = colnames(expression)[-1],
+                                #TODO maybe figure out how to make this a dataframe with the 
+                                #first few columns if a dataset has multiple identifiers for
+                                #each gene
+                                genes = expression[[1]],
+                                geo_accession = geo)
+            class(tme_dataset) <- "tme_data"
  
             
             df_list[[row]] <- tme_dataset
