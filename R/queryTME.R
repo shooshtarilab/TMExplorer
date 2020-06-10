@@ -112,15 +112,14 @@ queryTME <- function(geo_accession=NULL,
             #print(geo)
 
             #download the data into dataframes
-            if (df[row,'expression_link'] != ''){
+            if ((df[row,'expression_link'] != '')&&(sparse==FALSE)){
                 filename = tempfile()
-                if (sparse==TRUE){
-                    utils::download.file(df[row,'sparse_expression_link'], destfile=filename, quiet = TRUE)
-                    expression <- readRDS(filename)
-                } else {
-                    utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
-                    expression <- readRDS(filename)
-                }
+                utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
+                expression <- readRDS(filename)
+            } else if ((df[row,'sparse_expression_link'] != '')&&(sparse==TRUE)){
+                filename = tempfile()
+                utils::download.file(df[row,'sparse_expression_link'], destfile=filename, quiet = TRUE)
+                expression <- readRDS(filename)
             } else {
                 expression <- NULL
             }
