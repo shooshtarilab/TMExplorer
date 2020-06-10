@@ -16,6 +16,7 @@
 #' @param sparse Return expression as a sparse matrix. Uses less memory but is less convenient to view. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
+#' @importFrom Matrix Matrix
 #' @export
 #' @examples
 #' queryTME
@@ -113,10 +114,11 @@ queryTME <- function(geo_accession=NULL,
             #download the data into dataframes
             if (df[row,'expression_link'] != ''){
                 filename = tempfile()
-                utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
-                if (sparse==FALSE){
-                    expression <- as.matrix(readRDS(filename))
+                if (sparse==TRUE){
+                    utils::download.file(df[row,'sparse_expression_link'], destfile=filename, quiet = TRUE)
+                    expression <- readRDS(filename)
                 } else {
+                    utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
                     expression <- readRDS(filename)
                 }
             } else {
