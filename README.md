@@ -60,15 +60,20 @@ Once you've found a field to search on, you can get your data.
 res = queryTME(geo_accession = "GSE72056")
 ```
 
-This will return a list containing dataset GSE72056. The dataset is stored as a `tme_data` object, which has the following attributes:
+This will return a list containing dataset GSE72056. The dataset is stored as a `tme_data` object, which has the following attributes that can be broken down into two categories:
 
+#### Data
 | Attribute     | Description |
 | ------------- | ------------- |
-| expression    | A `data.frame` or `matrix` containing genes x cells  |
+| expression    | A `matrix` containing genes x cells  |
 | labels        | A `data.frame` containing a list of cell barcodes and their true cell-types |
 | signatures    | A `data.frame` containing the cell types and a list of genes that represent that cell type |
 | cells         | A list of cells included in the study |
 | genes         | A list of genes included in the study |
+
+#### Metadata
+| Metadata      | Description |
+| ------------- | --------------------------------------------------------------- |
 | pmid          | The PubMed ID of the study |
 | technology    | The sequencing technology used |
 | score_type    | The type of score shown in `tme_data$expression` |
@@ -79,7 +84,7 @@ This will return a list containing dataset GSE72056. The dataset is stored as a 
 | tumours       | The number of tumours sampled by the study |
 | geo_accession | The GEO accession ID for the dataset |
 
-To view the gene expression data for this dataset use this:
+Data attributes are matrices or dataframes containing data from the study, and metadata attributes describe the data in the study. Both can be accessed in the same manner; to view the gene expression data for this dataset use this:
 ```
 View(res[[1]]$expression)
 ```
