@@ -72,7 +72,7 @@ This will return a list containing dataset GSE72056. The dataset is stored as a 
 | genes         | A list of genes included in the study |
 
 #### Metadata
-| Metadata      | Description |
+| Attribute     | Description |
 | ------------- | --------------------------------------------------------------- |
 | pmid          | The PubMed ID of the study |
 | technology    | The sequencing technology used |
