@@ -37,11 +37,12 @@ queryTME <- function(geo_accession=NULL,
     #data("tme_meta")
     df = tme_meta
     if (!is.null(geo_accession)) {
-        #TODO what to do for datasets that aren't in GEO
+        #TODO maybe rename this to something else since not all datasets come from geo
         df <- df[df$accession == geo_accession,]
     }
     if (!is.null(score_type)) {
-        #TODO what to do for datasets with multiple score types available?
+        #TODO eventually this will become a way to select which type of score you want to 
+        # download since we will store multiple types
         df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
     if (!is.null(has_signatures)) {
@@ -68,8 +69,6 @@ queryTME <- function(geo_accession=NULL,
         df <- df[toupper(df$journal) == toupper(journal),]
     }
     if (!is.null(year)) {
-        #TODO should we be able to search year ranges?
-        #df <- df[df$year == year,]
         year = gsub(' ', '', year)
         #check greater than
         if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>',year)[[1]][[1]]==1){
@@ -128,8 +127,6 @@ queryTME <- function(geo_accession=NULL,
                 filename = tempfile()
                 utils::download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
                 labels<- readRDS(filename)
-                #labels <- read.csv(filename)
-                #labels <- read.csv(df[row,'truth_label_link'], fileEncoding="latin1" sep='\t')
             } else {
                 labels <- NULL
             }
@@ -138,8 +135,6 @@ queryTME <- function(geo_accession=NULL,
                 filename = tempfile()
                 utils::download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
                 sigs<- readRDS(filename)
-                #sigs <- read.csv(filename)
-                #sigs <- read.csv(df[row, 'signature_link'], fileEncoding="latin1" sep='\t')
             } else {
                 sigs <- NULL
             }
@@ -155,11 +150,11 @@ queryTME <- function(geo_accession=NULL,
                                 tumour_type = df[row, 'tumor_type'],
                                 patients = df[row, 'patients'],
                                 tumours  = df[row, 'tumours'],
-                                cells = colnames(expression)[-1],
+                                cells = colnames(expression),
                                 #TODO maybe figure out how to make this a dataframe with the 
                                 #first few columns if a dataset has multiple identifiers for
                                 #each gene
-                                genes = expression[,1],
+                                genes = row.names(expression),
                                 geo_accession = geo)
             class(tme_dataset) <- "tme_data"
  
