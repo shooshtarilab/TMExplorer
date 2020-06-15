@@ -2,4 +2,5 @@
 
 export(queryTME)
 export(saveTME)
+importFrom(Matrix,Matrix)
 importFrom(methods,new)

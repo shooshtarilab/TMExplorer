@@ -1,19 +1,3 @@
-tme_data <- setRefClass("tme_data",
-                        fields = list(expression = "data.frame",
-                        labels = "data.frame",
-                        signatures = "data.frame",
-                        pmid = "numeric",
-                        technology = "character",
-                        score_type = "character",
-                        organism = "character",
-                        author = "character",
-                        tumour_type = "character",
-                        patients = "numeric",
-                        tumours = "numeric",
-                        cells = "character",
-                        genes = "character",
-                        geo_accession = "character"))
-
 #' A function to query TME datasets available in this package
 #'
 #' This function allows you to search and subset included TME datasets
@@ -29,8 +13,10 @@ tme_data <- setRefClass("tme_data",
 #' @param sequence_tech Search by sequencing technology
 #' @param organism Search by source organism
 #' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
+#' @param sparse Return expression as a sparse matrix. Uses less memory but is less convenient to view. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
+#' @importFrom Matrix Matrix
 #' @export
 #' @examples
 #' queryTME
@@ -46,15 +32,17 @@ queryTME <- function(geo_accession=NULL,
                      pmid=NULL, #TODO
                      sequence_tech=NULL, #TODO
                      organism=NULL,
-                     metadata_only=FALSE){
+                     metadata_only=FALSE,
+                     sparse = FALSE){
     #data("tme_meta")
     df = tme_meta
     if (!is.null(geo_accession)) {
-        #TODO what to do for datasets that aren't in GEO
+        #TODO maybe rename this to something else since not all datasets come from geo
         df <- df[df$accession == geo_accession,]
     }
     if (!is.null(score_type)) {
-        #TODO what to do for datasets with multiple score types available?
+        #TODO eventually this will become a way to select which type of score you want to 
+        # download since we will store multiple types
         df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
     if (!is.null(has_signatures)) {
@@ -81,8 +69,6 @@ queryTME <- function(geo_accession=NULL,
         df <- df[toupper(df$journal) == toupper(journal),]
     }
     if (!is.null(year)) {
-        #TODO should we be able to search year ranges?
-        #df <- df[df$year == year,]
         year = gsub(' ', '', year)
         #check greater than
         if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>',year)[[1]][[1]]==1){
@@ -125,55 +111,52 @@ queryTME <- function(geo_accession=NULL,
             #print(geo)
 
             #download the data into dataframes
-            if (df[row,'expression_link'] != ''){
-                #print('expression')
+            if ((df[row,'expression_link'] != '')&&(sparse==FALSE)){
                 filename = tempfile()
                 utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
-                #expression<- read.csv(filename, sep='\t')
-                expression<- readRDS(filename)
-                #expression <- read.csv(df[row,'expression_link'], fileEncoding="latin1" sep='\t')
+                expression <- readRDS(filename)
+            } else if ((df[row,'sparse_expression_link'] != '')&&(sparse==TRUE)){
+                filename = tempfile()
+                utils::download.file(df[row,'sparse_expression_link'], destfile=filename, quiet = TRUE)
+                expression <- readRDS(filename)
             } else {
-                expression <- data.frame()
+                expression <- NULL
             }
             if (df[row,'truth_label_link'] != ''){
                 #print('labels')
                 filename = tempfile()
                 utils::download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
                 labels<- readRDS(filename)
-                #labels <- read.csv(filename)
-                #labels <- read.csv(df[row,'truth_label_link'], fileEncoding="latin1" sep='\t')
             } else {
-                labels <- data.frame()
+                labels <- NULL
             }
             if (df[row,'signature_link'] != ''){
                 #print('signatures')
                 filename = tempfile()
                 utils::download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
                 sigs<- readRDS(filename)
-                #sigs <- read.csv(filename)
-                #sigs <- read.csv(df[row, 'signature_link'], fileEncoding="latin1" sep='\t')
             } else {
-                sigs <- data.frame()
+                sigs <- NULL
             }
 
-            tme_dataset <- methods::new("tme_data",
-                               expression = expression,
-                               labels = labels,
-                               signatures = sigs,
-                               pmid = df[row, 'PMID'],
-                               technology = df[row, 'Technology'],
-                               score_type = df[row, 'score_type'], 
-                               organism  = df[row, 'Organism'],
-                               author = df[row, 'author'],
-                               tumour_type = df[row, 'tumor_type'],
-                               patients = df[row, 'patients'],
-                               tumours  = df[row, 'tumours'],
-                               cells = colnames(expression)[-1],
-                               #TODO maybe figure out how to make this a dataframe with the 
-                               #first few columns if a dataset has multiple identifiers for
-                               #each gene
-                               genes = expression[[1]],
-                               geo_accession = geo)
+            tme_dataset <- list(expression = expression,
+                                labels = labels,
+                                signatures = sigs,
+                                pmid = df[row, 'PMID'],
+                                technology = df[row, 'Technology'],
+                                score_type = df[row, 'score_type'], 
+                                organism  = df[row, 'Organism'],
+                                author = df[row, 'author'],
+                                tumour_type = df[row, 'tumor_type'],
+                                patients = df[row, 'patients'],
+                                tumours  = df[row, 'tumours'],
+                                cells = colnames(expression),
+                                #TODO maybe figure out how to make this a dataframe with the 
+                                #first few columns if a dataset has multiple identifiers for
+                                #each gene
+                                genes = row.names(expression),
+                                geo_accession = geo)
+            class(tme_dataset) <- "tme_data"
  
             
             df_list[[row]] <- tme_dataset
