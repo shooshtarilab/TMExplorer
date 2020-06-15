@@ -19,7 +19,7 @@ saveTME <- function(object, outdir){
     # need to test this on windows, make sure it still works
     expr_name = file.path(outdir, paste(object$geo_accession,"expression.csv", sep='_'))
     label_name = file.path(outdir, paste(object$geo_accession,"cell_types.csv",sep='_'))
-    sig_name = file.path(paste(object$geo_accession,"gene_signatures.csv",sep='_'))
+    sig_name = file.path(outdir, paste(object$geo_accession,"gene_signatures.csv",sep='_'))
     utils::write.csv(object$expression, file=expr_name)
     utils::write.csv(object$labels, file=label_name)
     utils::write.csv(object$signatures, file=sig_name)
