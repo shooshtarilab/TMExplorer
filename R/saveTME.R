@@ -11,15 +11,17 @@ saveTME <- function(object, outdir){
     if (class(object)[[1]] != "tme_data"){
         stop('object parameter must be of type tme_data')
     }
-    if (!file.exists(outdir)){
-        stop('outdir must be an existing directory')
+    if (file.exists(outdir)){
+        stop('outdir must not be an existing directory')
+    } else {
+        dir.create(outdir)
     }
     # need to test this on windows, make sure it still works
-    expr_name = paste(outdir,"/",object$geo_accession,"_expression.csv",sep='')
-    label_name = paste(outdir,"/",object$geo_accession,"_cell_types.csv",sep='')
-    sig_name = paste(outdir,"/",object$geo_accession,"_gene_signatures.csv",sep='')
+    expr_name = file.path(outdir, paste(object$geo_accession,"expression.csv", sep='_'))
+    label_name = file.path(outdir, paste(object$geo_accession,"cell_types.csv",sep='_'))
+    sig_name = file.path(paste(object$geo_accession,"gene_signatures.csv",sep='_'))
     utils::write.csv(object$expression, file=expr_name)
     utils::write.csv(object$labels, file=label_name)
     utils::write.csv(object$signatures, file=sig_name)
-    print(paste('Done! Check', outdir, 'for files'))
+    print(paste('Done! Check', outdir, 'for files', sep=' '))
 }
