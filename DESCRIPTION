@@ -1,6 +1,6 @@
 Package: TMExplorer
 Title: A Collection of Tumour MicroEnvironment (TME) Datasets and Correspodnding Metadata 
-Version: 0.0.0.9000
+Version: 0.0.1.0000
 Authors@R: 
     person(given = "Erik",
            family = "Christensen",
