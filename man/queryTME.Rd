@@ -16,7 +16,8 @@ queryTME(
   pmid = NULL,
   sequence_tech = NULL,
   organism = NULL,
-  metadata_only = FALSE
+  metadata_only = FALSE,
+  sparse = FALSE
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ queryTME(
 \item{organism}{Search by source organism}
 
 \item{metadata_only}{Return rows of metadata instead of actual datasets. Defaults to FALSE}
+
+\item{sparse}{Return expression as a sparse matrix. Uses less memory but is less convenient to view. Defaults to FALSE.}
 }
 \description{
 This function allows you to search and subset included TME datasets
