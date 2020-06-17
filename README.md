@@ -1,14 +1,17 @@
 # TMExplorer
 
-### Installation
+## Introduction
+
+TMExplorer (Tumour Microenvironment Explorer) is a curated collection of scRNAseq datasets sequenced from tumours. It aims to provide a single point of entry for users looking to study the tumour microenvironment at the single-cell level. 
+
+Users can quickly search available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R. 
+
+This package will improve the ease of studying the tumour microenvironment with single-cell sequencing. Developers may use this package to obtain data for validation of new algorithms and researchers interested in the tumour microenvironment may use it to study specific cancers more closely. 
+
+## Installation
 ``` 
 > library(devtools)
 > install_github("shooshtarilab/TMExplorer")
-```
-note: while the repo is set to private you will have to generate a personal access token (with repo access) [here](https://github.com/settings/tokens), make sure to save the token somewhere locally and then call:
-
-```
-> install_github("shooshtarilab/TMExplorer", auth_token='token')
 ```
 
 # Tutorial
