@@ -1,19 +1,19 @@
 Package: TMExplorer
-Title: A Collection of Tumour MicroEnvironment (TME) Datasets and Correspodnding Metadata 
-Version: 0.0.1.0000
+Title: A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datasets and Correspodnding Metadata 
+Version: 0.99.0
 Authors@R: 
     person(given = "Erik",
            family = "Christensen",
            role = c("aut", "cre"),
-           email = "echris3@uwo.ca",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "echris3@uwo.ca")
 Description: What the package does (one paragraph).
-License: GPL-3
+License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
+LazyData: FALSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Imports: methods, Matrix
 Depends: 
-    R (>= 2.10)
-
+    R (>= 4.0)
+biocViews: CancerData, SingleCellData, RNASeqData
+BugReports: https://github.com/shooshtarilab/TMExplorer/issues
