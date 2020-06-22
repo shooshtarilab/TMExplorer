@@ -3,17 +3,19 @@ Title: A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datase
 Version: 0.99.0
 Authors@R: 
     person(given = "Erik",
-           family = "Christensen",
-           role = c("aut", "cre"),
-           email = "echris3@uwo.ca")
+            family = "Christensen",
+            role = c("aut", "cre"),
+            email = "echris3@uwo.ca")
 Description: What the package does (one paragraph).
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: FALSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
 Depends: 
     R (>= 4.0)
-biocViews: CancerData, SingleCellData, RNASeqData
+biocViews: CancerData, SingleCellData, RNASeqData, SequencingData, ExpressionData, GEO, PackageTypeData
 BugReports: https://github.com/shooshtarilab/TMExplorer/issues

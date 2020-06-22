@@ -51,7 +51,7 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 | pmid             | Search by publication ID                        | 24925914, 27124452      |
 | sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  |
 | organism         | Search by source organism                       | Human, Mice             |
-| sparse           | Return expression in sparse matrices            | TRUE, FALSE
+| sparse           | Return expression in sparse matrices            | TRUE, FALSE             |
 
 #### Searching by year
 
