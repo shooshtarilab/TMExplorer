@@ -4,10 +4,17 @@ Title:
     Correspodnding Metadata 
 Version: 0.99.0
 Authors@R: 
-    person(given = "Erik",
+    c(person(given = "Erik",
             family = "Christensen",
             role = c("aut", "cre"),
-            email = "echris3@uwo.ca")
+            email = "echris3@uwo.ca"),
+    person(given= "Alaine",
+            family = "Naidas",
+            role = c("aut")),
+    person(given="Parisa",
+            family="Shooshtari",
+            role = c("aut"),
+            email="pshoosh@uwo.ca"))
 Description: 
     This package provides a tool to search and download a collection of tumour microenvironment 
     single-cell RNA sequencing datasets and their metadata. TMExplorer aims to act as a single 
