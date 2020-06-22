@@ -45,12 +45,22 @@ queryTME(
 
 \item{metadata_only}{Return rows of metadata instead of actual datasets. Defaults to FALSE}
 
-\item{sparse}{Return expression as a sparse matrix. Uses less memory but is less convenient to view. Defaults to FALSE.}
+\item{sparse}{Return expression as a sparse matrix.
+Uses less memory but is less convenient to view. Defaults to FALSE.}
 }
 \description{
 This function allows you to search and subset included TME datasets
 }
+\section{Value}{
+
+Used to search for and download tumour microenvironment data.
+}
+
 \examples{
-queryTME
+res <- queryTME(metadata_only = TRUE)
+\dontrun{
+res <- queryTME(geo_accession = "GSE72056")
+res <- queryTME(has_truth = TRUE, has_signatures = TRUE)
+}
 }
 \keyword{tumour}

@@ -3,4 +3,5 @@
 export(queryTME)
 export(saveTME)
 importFrom(Matrix,Matrix)
+importFrom(methods,is)
 importFrom(methods,new)
