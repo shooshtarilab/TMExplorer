@@ -12,6 +12,16 @@ saveTME(object, outdir)
 \item{outdir}{The directory to save the tme_data in}
 }
 \description{
-This function allows you to save the expression, labels, and cell types to disk in csv format
+This function allows you to save the expression,
+labels, and cell types to disk in csv format
+}
+\section{Value}{
+
+Used to save TME datasets to disk.
+}
+
+\examples{
+\dontshow{res <- list(); class(res) <- "tme_data"} 
+saveTME(res, '~/Downloads/GSE72056')
 }
 \keyword{tumour}
