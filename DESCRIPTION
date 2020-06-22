@@ -1,19 +1,35 @@
 Package: TMExplorer
-Title: A Collection of Tumour MicroEnvironment (TME) Datasets and Correspodnding Metadata 
-Version: 0.0.1.0000
+Title: 
+    A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datasets and 
+    Correspodnding Metadata 
+Version: 0.99.0
 Authors@R: 
     person(given = "Erik",
-           family = "Christensen",
-           role = c("aut", "cre"),
-           email = "echris3@uwo.ca",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: GPL-3
+            family = "Christensen",
+            role = c("aut", "cre"),
+            email = "echris3@uwo.ca")
+Description: 
+    This package provides a tool to search and download a collection of tumour microenvironment 
+    single-cell RNA sequencing datasets and their metadata. TMExplorer aims to act as a single 
+    point of entry for users looking to study the tumour microenvironment at the single cell 
+    level. Users can quickly search available datasets using the metadata table and then 
+    download the ones they are interested in for analysis.
+License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
+LazyData: FALSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
 Depends: 
-    R (>= 2.10)
-
+    R (>= 4.0)
+biocViews: 
+    CancerData, 
+    SingleCellData, 
+    RNASeqData, 
+    SequencingData, 
+    ExpressionData, 
+    GEO, 
+    PackageTypeData
+BugReports: https://github.com/shooshtarilab/TMExplorer/issues

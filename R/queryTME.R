@@ -13,29 +13,36 @@
 #' @param sequence_tech Search by sequencing technology
 #' @param organism Search by source organism
 #' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
-#' @param sparse Return expression as a sparse matrix. Uses less memory but is less convenient to view. Defaults to FALSE.
+#' @param sparse Return expression as a sparse matrix. 
+#'                  Uses less memory but is less convenient to view. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
 #' @export
+#' @section Value: 
+#' Used to search for and download tumour microenvironment data.
 #' @examples
-#' queryTME
+#' res <- queryTME(metadata_only = TRUE)
+#' \dontrun{
+#' res <- queryTME(geo_accession = "GSE72056")
+#' res <- queryTME(has_truth = TRUE, has_signatures = TRUE)
+#' }
 
 queryTME <- function(geo_accession=NULL,
-                     score_type=NULL,
-                     has_signatures=NULL,
-                     has_truth=NULL,
-                     tumour_type=NULL,
-                     author=NULL, #TODO
-                     journal=NULL, #TODO
-                     year=NULL, #TODO
-                     pmid=NULL, #TODO
-                     sequence_tech=NULL, #TODO
-                     organism=NULL,
-                     metadata_only=FALSE,
-                     sparse = FALSE){
+                    score_type=NULL,
+                    has_signatures=NULL,
+                    has_truth=NULL,
+                    tumour_type=NULL,
+                    author=NULL, 
+                    journal=NULL, 
+                    year=NULL, 
+                    pmid=NULL, 
+                    sequence_tech=NULL, 
+                    organism=NULL,
+                    metadata_only=FALSE,
+                    sparse = FALSE){
     #data("tme_meta")
-    df = tme_meta
+    df <- tme_meta
     if (!is.null(geo_accession)) {
         #TODO maybe rename this to something else since not all datasets come from geo
         df <- df[df$accession == geo_accession,]
@@ -69,22 +76,22 @@ queryTME <- function(geo_accession=NULL,
         df <- df[toupper(df$journal) == toupper(journal),]
     }
     if (!is.null(year)) {
-        year = gsub(' ', '', year)
+        year <- gsub(' ', '', year)
         #check greater than
         if (gregexpr('<', year)[[1]][[1]] == 5 || gregexpr('>',year)[[1]][[1]]==1){
-            year = sub('>','',year)
-            year = sub('<','',year)
+            year <- sub('>','',year)
+            year <- sub('<','',year)
             df <- df[df$year>=year,]
         
         #check between
         }else if (grepl('-',year,fixed=TRUE)){
-            year = strsplit(year,'-')[[1]]
+            year <- strsplit(year,'-')[[1]]
             df <- df[df$year>=year[[1]]&df$year<=year[[2]],]
         
         #check less than
         }else if (gregexpr('>', year)[[1]][[1]] == 5 || gregexpr('<',year)[[1]][[1]]==1){
-            year = sub('>','',year)
-            year = sub('<','',year)
+            year <- sub('>','',year)
+            year <- sub('<','',year)
             df <- df[df$year<=year,]
         
         #check equals
@@ -106,34 +113,42 @@ queryTME <- function(geo_accession=NULL,
         return(list(df))
     } else {
         df_list <- list()
-        for (row in 1:nrow(df)){
+        for (row in seq_len(nrow(df))){
             geo <- df[row, 'accession']
             #print(geo)
 
             #download the data into dataframes
             if ((df[row,'expression_link'] != '')&&(sparse==FALSE)){
-                filename = tempfile()
-                utils::download.file(df[row,'expression_link'], destfile=filename, quiet = TRUE)
+                filename <- tempfile()
+                utils::download.file(df[row,'expression_link'], 
+                                    destfile=filename, 
+                                    quiet = TRUE)
                 expression <- readRDS(filename)
             } else if ((df[row,'sparse_expression_link'] != '')&&(sparse==TRUE)){
-                filename = tempfile()
-                utils::download.file(df[row,'sparse_expression_link'], destfile=filename, quiet = TRUE)
+                filename <- tempfile()
+                utils::download.file(df[row,'sparse_expression_link'], 
+                                    destfile=filename, 
+                                    quiet = TRUE)
                 expression <- readRDS(filename)
             } else {
                 expression <- NULL
             }
             if (df[row,'truth_label_link'] != ''){
                 #print('labels')
-                filename = tempfile()
-                utils::download.file(df[row,'truth_label_link'], destfile=filename, quiet = TRUE)
+                filename <- tempfile()
+                utils::download.file(df[row,'truth_label_link'], 
+                                    destfile=filename, 
+                                    quiet = TRUE)
                 labels<- readRDS(filename)
             } else {
                 labels <- NULL
             }
             if (df[row,'signature_link'] != ''){
                 #print('signatures')
-                filename = tempfile()
-                utils::download.file(df[row,'signature_link'], destfile=filename, quiet = TRUE)
+                filename <- tempfile()
+                utils::download.file(df[row,'signature_link'], 
+                                    destfile=filename, 
+                                    quiet = TRUE)
                 sigs<- readRDS(filename)
             } else {
                 sigs <- NULL
