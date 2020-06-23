@@ -119,7 +119,7 @@ The dataset is stored as a `tme_data` object, which has the following attributes
 
 Data attributes are matrices or dataframes containing data from the study, and metadata attributes describe the data in the study. 
 Both can be accessed in the same manner; to view the gene expression data for this dataset use this:
-```{r, eval=FALSE} #> not evaluated because of knitr kable call
+```{r, eval=FALSE}
 View(res[[1]]$expression)
 ```
 ```{r, echo=FALSE}
