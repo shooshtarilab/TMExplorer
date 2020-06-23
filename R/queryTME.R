@@ -109,73 +109,14 @@ queryTME <- function(geo_accession=NULL,
         df <- df[toupper(df$Organism) == toupper(organism),]
     }
     if (metadata_only) {
-        df[,c('signature_link', 'expression_link', 'truth_label_link')] <- list(NULL)
+        df[,c('signature_link', 'expression_link', 'truth_label_link','sparse_expression_link')] <- list(NULL)
         return(list(df))
     } else {
         df_list <- list()
         for (row in seq_len(nrow(df))){
-            geo <- df[row, 'accession']
+            #geo <- df[row, 'accession']
             #print(geo)
-
-            #download the data into dataframes
-            if ((df[row,'expression_link'] != '')&&(sparse==FALSE)){
-                filename <- tempfile()
-                utils::download.file(df[row,'expression_link'], 
-                                    destfile=filename, 
-                                    quiet = TRUE)
-                expression <- readRDS(filename)
-            } else if ((df[row,'sparse_expression_link'] != '')&&(sparse==TRUE)){
-                filename <- tempfile()
-                utils::download.file(df[row,'sparse_expression_link'], 
-                                    destfile=filename, 
-                                    quiet = TRUE)
-                expression <- readRDS(filename)
-            } else {
-                expression <- NULL
-            }
-            if (df[row,'truth_label_link'] != ''){
-                #print('labels')
-                filename <- tempfile()
-                utils::download.file(df[row,'truth_label_link'], 
-                                    destfile=filename, 
-                                    quiet = TRUE)
-                labels<- readRDS(filename)
-            } else {
-                labels <- NULL
-            }
-            if (df[row,'signature_link'] != ''){
-                #print('signatures')
-                filename <- tempfile()
-                utils::download.file(df[row,'signature_link'], 
-                                    destfile=filename, 
-                                    quiet = TRUE)
-                sigs<- readRDS(filename)
-            } else {
-                sigs <- NULL
-            }
-
-            tme_dataset <- list(expression = expression,
-                                labels = labels,
-                                signatures = sigs,
-                                pmid = df[row, 'PMID'],
-                                technology = df[row, 'Technology'],
-                                score_type = df[row, 'score_type'], 
-                                organism  = df[row, 'Organism'],
-                                author = df[row, 'author'],
-                                tumour_type = df[row, 'tumor_type'],
-                                patients = df[row, 'patients'],
-                                tumours  = df[row, 'tumours'],
-                                cells = colnames(expression),
-                                #TODO maybe figure out how to make this a dataframe with the 
-                                #first few columns if a dataset has multiple identifiers for
-                                #each gene
-                                genes = row.names(expression),
-                                geo_accession = geo)
-            class(tme_dataset) <- "tme_data"
- 
-            
-            df_list[[row]] <- tme_dataset
-
+            df_list[[row]] <- fetchTME(df, row, sparse)
         }
         return(df_list)
     }
