@@ -18,6 +18,7 @@
 #' @keywords tumour
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
+#' @importFrom SingleCellExperiment SingleCellExperiment
 #' @export
 #' @section Value: 
 #' Used to search for and download tumour microenvironment data.

@@ -30,7 +30,8 @@ VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
 Depends: 
-    R (>= 4.0)
+    R (>= 4.0),
+    SingleCellExperiment
 biocViews: 
     CancerData, 
     SingleCellData, 
