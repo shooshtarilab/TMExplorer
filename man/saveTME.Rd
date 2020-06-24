@@ -21,7 +21,7 @@ Used to save TME datasets to disk.
 }
 
 \examples{
-\dontshow{res <- list(); class(res) <- "tme_data"} 
+\dontshow{res <- SingleCellExperiment(list(counts=matrix())) } 
 saveTME(res, '~/Downloads/GSE72056')
 }
 \keyword{tumour}
