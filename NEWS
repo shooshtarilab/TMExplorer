@@ -1,2 +1,5 @@
 Changes in version 0.99.0 (2020-06-22)
 + Submitted to Bioconductor
+
+Changes in version 0.99.x (2020-06-xx)
++ Now uses SingleCellExperiment objects
