@@ -18,6 +18,8 @@
 #'        Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix. 
 #'        Uses less memory but is less convenient to view. Defaults to FALSE.
+#' @param download_format A list of formats to download. 
+#'        Can be counts, tpm, fpkm, etc. See metadata for available formats.
 #' @keywords tumour
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
@@ -44,7 +46,8 @@ queryTME <- function(geo_accession=NULL,
                     sequence_tech=NULL, 
                     organism=NULL,
                     metadata_only=FALSE,
-                    sparse = FALSE){
+                    sparse = FALSE,
+                    download_format = c('counts')){
     #data("tme_meta")
     df <- tme_meta
     if (!is.null(geo_accession)) {
@@ -122,7 +125,7 @@ queryTME <- function(geo_accession=NULL,
         for (row in seq_len(nrow(df))){
             #geo <- df[row, 'accession']
             #print(geo)
-            df_list[[row]] <- fetchTME(df, row, sparse)
+            df_list[[row]] <- fetchTME(df, row, sparse, download_format)
         }
         return(df_list)
     }
