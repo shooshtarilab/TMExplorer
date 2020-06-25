@@ -9,8 +9,7 @@
 #' @importFrom methods is
 #' @importFrom SingleCellExperiment SingleCellExperiment colData 
 #' @export
-#' @section Value:
-#' Used to save TME datasets to disk.
+#' @return Nothing
 #' @examples
 #' \dontrun{res <- queryTME(geo_accession = 'GSE72056')[[1]]}
 #' \dontshow{res <- SingleCellExperiment(list(counts=matrix()))

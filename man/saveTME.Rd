@@ -11,15 +11,13 @@ saveTME(object, outdir)
 
 \item{outdir}{The directory to save the tme_data in}
 }
+\value{
+Nothing
+}
 \description{
 This function allows you to save the expression,
 labels, and cell types to disk in csv format
 }
-\section{Value}{
-
-Used to save TME datasets to disk.
-}
-
 \examples{
 \dontrun{res <- queryTME(geo_accession = 'GSE72056')[[1]]}
 \dontshow{res <- SingleCellExperiment(list(counts=matrix()))
