@@ -1,5 +1,8 @@
 Changes in version 0.99.0 (2020-06-22)
 + Submitted to Bioconductor
 
+Changes in version 0.99.1 (2020-06-25)
++ Now uses SingleCellExperiment objects
+
 Changes in version 0.99.x (2020-06-xx)
 + Support multiple data formats (Counts, TPM, FPKM, etc)
