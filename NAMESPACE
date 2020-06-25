@@ -3,5 +3,7 @@
 export(queryTME)
 export(saveTME)
 importFrom(Matrix,Matrix)
+importFrom(SingleCellExperiment,SingleCellExperiment)
+importFrom(SingleCellExperiment,colData)
 importFrom(methods,is)
 importFrom(methods,new)

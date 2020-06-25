@@ -10,8 +10,11 @@ This package will improve the ease of studying the tumour microenvironment with 
 
 ## Installation
 ``` 
-> library(devtools)
-> install_github("shooshtarilab/TMExplorer")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install("SingleCellExperiment")
+library(devtools)
+install_github("shooshtarilab/TMExplorer")
 ```
 
 # Tutorial
@@ -66,20 +69,14 @@ Once you've found a field to search on, you can get your data.
 > res = queryTME(geo_accession = "GSE72056")
 ```
 
-This will return a list containing dataset GSE72056. The dataset is stored as a `tme_data` object, which has the following attributes that can be broken down into two categories:
-
-#### Data
-| Attribute     | Description |
-| ------------- | ------------- |
-| expression    | A `matrix` containing genes x cells  |
-| labels        | A `data.frame` containing a list of cell barcodes and their true cell-types |
-| signatures    | A `data.frame` containing the cell types and a list of genes that represent that cell type |
-| cells         | A list of cells included in the study |
-| genes         | A list of genes included in the study |
+This will return a list containing dataset GSE72056. The dataset is stored as a `SingleCellExperiment` object, with the following metadata list:
 
 #### Metadata
 | Attribute     | Description |
 | ------------- | --------------------------------------------------------------- |
+| signatures    | A `data.frame` containing the cell types and a list of genes that represent that cell type |
+| cells         | A list of cells included in the study |
+| genes         | A list of genes included in the study |
 | pmid          | The PubMed ID of the study |
 | technology    | The sequencing technology used |
 | score_type    | The type of score shown in `tme_data$expression` |
@@ -90,11 +87,24 @@ This will return a list containing dataset GSE72056. The dataset is stored as a 
 | tumours       | The number of tumours sampled by the study |
 | geo_accession | The GEO accession ID for the dataset |
 
-Data attributes are matrices or dataframes containing data from the study, and metadata attributes describe the data in the study. Both can be accessed in the same manner; to view the gene expression data for this dataset use this:
+#### Accessing data
+
+To access the expression data for a result, use
 ```
-> View(res[[1]]$expression)
+> View(counts(res[[1]]))
 ```
 ![Screenshot of the metadata table](docs/GSE72056_expression.png)
+
+Cell type labels are stored under `colData(res[[1]])` for datasets for which cell type labels are available.
+
+To access metadata for a dataset, use
+```
+> metadata(res[[1]])
+```
+Specific metadata entries can be accessed by specifying the attribute name, for instance
+```
+> metadata(res[[1]])$pmid
+```
 
 
 ### Example: Returning all datasets with cell-type labels
@@ -105,7 +115,7 @@ Say you want to measure the performance of cell-type classification methods. To 
 ```
 This will return a list of all datasets that have true cell-types available. You can see the cell types for the first dataset using the following command:
 ```
-> View(res[[1]]$labels)
+> View(colData(res[[1]]))
 ```
 ![Screenshot of the cell type labels](docs/GSE72056_labels.png)
 
@@ -116,6 +126,7 @@ The first column of this dataframe contains the cell barcode, and the second con
 Some cell-type classification methods require a list of gene signatures, to return only datasets that have cell-type gene signatures available, use:
 ```
 > res = queryTME(has_truth = TRUE, has_signatures = TRUE)
+> View(metadata(res[[1]])$signatures)
 ```
 ![Screenshot of the cell type gene signatures](docs/GSE72056_signatures.png)
 
@@ -131,5 +142,7 @@ To save the data from the earlier example to disk, use the following commands.
 [1] "Done! Check ~/Downloads/GSE72056 for files"
 ```
 The result is three CSV files that can be used in other programs. In the future we will support saving in other formats.
+
+NOTE: `saveTME` is currently not compatible with sparse datasets. This is due to the size of some datasets and the memory required to convert them to a dense matrix that can be written to a csv file. To save the elements of a sparse object, use `write.table()` and `as.matrix(counts(res))`, keeping in mind that doing this with some of the larger datasets may cause R to crash.
 
 ![Screenshot of the saveTME files](docs/saveTME_files.png)
