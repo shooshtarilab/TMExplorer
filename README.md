@@ -115,7 +115,7 @@ Say you want to measure the performance of cell-type classification methods. To 
 ```
 This will return a list of all datasets that have true cell-types available. You can see the cell types for the first dataset using the following command:
 ```
-> View(as.data.frame(colData(res[[1]])))
+> View(colData(res[[1]]))
 ```
 ![Screenshot of the cell type labels](docs/GSE72056_labels.png)
 
@@ -142,5 +142,7 @@ To save the data from the earlier example to disk, use the following commands.
 [1] "Done! Check ~/Downloads/GSE72056 for files"
 ```
 The result is three CSV files that can be used in other programs. In the future we will support saving in other formats.
+
+NOTE: `saveTME` is currently not compatible with sparse datasets. This is due to the size of some datasets and the memory required to convert them to a dense matrix that can be written to a csv file. To save the elements of a sparse object, use `write.table()` and `as.matrix(counts(res))`, keeping in mind that doing this with some of the larger datasets may cause R to crash.
 
 ![Screenshot of the saveTME files](docs/saveTME_files.png)
