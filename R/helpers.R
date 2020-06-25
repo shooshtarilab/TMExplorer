@@ -11,15 +11,6 @@ downloadTME <- function(df, row, column){
 
 }
 
-#' Fetches all components of a TME dataset
-#'
-#' @param df the metadata dataframe
-#' @param row the row storing the TME dataset
-#' @param sparse whether to download as a sparse matrix or not
-#' 
-#' @importFrom Matrix Matrix
-#' @importFrom SingleCellExperiment SingleCellExperiment
-#' 
 fetchTME <- function(df, row, sparse){
     #download the data into dataframes
     if (sparse == FALSE){

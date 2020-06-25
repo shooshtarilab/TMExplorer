@@ -20,8 +20,8 @@
 #' @importFrom Matrix Matrix
 #' @importFrom SingleCellExperiment SingleCellExperiment
 #' @export
-#' @section Value: 
-#' Used to search for and download tumour microenvironment data.
+#' @return A list containing a table of metadata or 
+#' one or more SingleCellExperiment objects
 #' @examples
 #' res <- queryTME(metadata_only = TRUE)
 #' \dontrun{
