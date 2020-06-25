@@ -3,7 +3,8 @@
 #' This function allows you to search and subset included TME datasets
 #' @param geo_accession Search by geo accession number
 #' @param score_type Search by type of score (TPM, FPKM, raw count)
-#' @param has_signatures Return datasets that have gene signatures available (TRUE/FALSE)
+#' @param has_signatures 
+#'        Return datasets that have gene signatures available (TRUE/FALSE)
 #' @param has_truth Search by the presence of known cell-type labels
 #' @param tumour_type Search by type of tumour contained in the dataset
 #' @param author Search by author
@@ -12,9 +13,11 @@
 #' @param pmid Search by Pubmed ID
 #' @param sequence_tech Search by sequencing technology
 #' @param organism Search by source organism
-#' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
+#' @param metadata_only 
+#'        Return rows of metadata instead of actual datasets. 
+#'        Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix. 
-#'                  Uses less memory but is less convenient to view. Defaults to FALSE.
+#'        Uses less memory but is less convenient to view. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
@@ -45,11 +48,13 @@ queryTME <- function(geo_accession=NULL,
     #data("tme_meta")
     df <- tme_meta
     if (!is.null(geo_accession)) {
-        #TODO maybe rename this to something else since not all datasets come from geo
+        #TODO maybe rename this to something else 
+        # since not all datasets come from geo
         df <- df[df$accession == geo_accession,]
     }
     if (!is.null(score_type)) {
-        #TODO eventually this will become a way to select which type of score you want to 
+        #TODO eventually this will become a way to 
+        # select which type of score you want to 
         # download since we will store multiple types
         df <- df[toupper(df$score_type) == toupper(score_type) ,]
     }
