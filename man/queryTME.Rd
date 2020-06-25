@@ -48,14 +48,13 @@ queryTME(
 \item{sparse}{Return expression as a sparse matrix.
 Uses less memory but is less convenient to view. Defaults to FALSE.}
 }
+\value{
+A list containing a table of metadata or
+one or more SingleCellExperiment objects
+}
 \description{
 This function allows you to search and subset included TME datasets
 }
-\section{Value}{
-
-Used to search for and download tumour microenvironment data.
-}
-
 \examples{
 res <- queryTME(metadata_only = TRUE)
 \dontrun{
