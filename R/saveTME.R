@@ -12,8 +12,11 @@
 #' @section Value:
 #' Used to save TME datasets to disk.
 #' @examples
-#' \dontshow{res <- SingleCellExperiment(list(counts=matrix())) } 
-#' saveTME(res, '~/Downloads/GSE72056')
+#' \dontrun{res <- queryTME(geo_accession = 'GSE72056')[[1]]}
+#' \dontshow{res <- SingleCellExperiment(list(counts=matrix()))
+#' tdir = tempdir()
+#' filename = file.path(tdir, 'save_tme_data')} 
+#' saveTME(res, filename)
 saveTME <- function(object, outdir){
     if (!is(object,"SingleCellExperiment")){
         stop('object parameter must be of type SingleCellExperiment')
