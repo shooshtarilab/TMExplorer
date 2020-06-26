@@ -17,7 +17,8 @@
 #'        Return rows of metadata instead of actual datasets. 
 #'        Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix. 
-#'        Uses less memory but is less convenient to view. Defaults to FALSE.
+#'        Uses less memory but is less convenient to view. 
+#'        Defaults to FALSE.
 #' @param download_format A list of formats to download. 
 #'        Can be counts, tpm, fpkm, etc. See metadata for available formats.
 #' @keywords tumour

@@ -59,7 +59,7 @@ fetchTME <- function(df, row, sparse, download_format){
                         genes = row.names(expression),
                         geo_accession = df[row, 'accession'])
 
-    tme_dataset <- SingleCellExperiment(list(counts = expression[[1]]),
+    tme_dataset <- SingleCellExperiment(list(counts = expression_list[[1]]),
                                     colData = data.frame(label=labels$truth),
                                     metadata = tme_data_meta)
     if (length(expression_list)>1){
