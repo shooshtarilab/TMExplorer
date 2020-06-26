@@ -115,7 +115,7 @@ Say you want to measure the performance of cell-type classification methods. To 
 ```
 This will return a list of all datasets that have true cell-types available. You can see the cell types for the first dataset using the following command:
 ```
-> View(colData(res[[1]]))
+> View(as.data.frame(colData(res[[1]])))
 ```
 ![Screenshot of the cell type labels](docs/GSE72056_labels.png)
 
