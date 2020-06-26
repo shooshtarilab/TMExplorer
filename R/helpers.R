@@ -12,28 +12,44 @@ downloadTME <- function(df, row, column){
 }
 
 downloadMultipleFormats <- function(df, row, sparse, formats){
+    valid_formats <- c('counts', 'tpm', 'fpkm')
     expression <- vector('list', length(formats))
     i <- 1
     for (format in formats){
         #TODO input validation for formats
             # counts should always be first, or the list should be named
-        if (sparse == FALSE){
-            expression[[i]] <- downloadTME(df, 
-                                        row, 
-                                        paste(format, 
-                                            'expression_link', 
-                                            sep='_'))
-        } else if (sparse == TRUE){
-            expression[[i]] <- downloadTME(df, 
-                                        row, 
-                                        paste('sparse', 
-                                            format, 
-                                            'expression_link', 
-                                            sep='_'))
+        if (tolower(format) %in% valid_formats){
+            if (sparse == FALSE){
+                expression[[i]] <- downloadTME(df, 
+                                            row, 
+                                            paste(tolower(format), 
+                                                'expression_link', 
+                                                sep='_'))
+            } else if (sparse == TRUE){
+                expression[[i]] <- downloadTME(df, 
+                                            row, 
+                                            paste('sparse', 
+                                                tolower(format), 
+                                                'expression_link', 
+                                                sep='_'))
+            }
+            #this test is a nice idea but the item in the list 
+            # is removed if NULL is returned by downloadTME
+            if (is.null(expression[[i]])){
+                print(paste(format, 
+                            'unavailable for', 
+                            df[row, 'accession'],
+                            sep=' '))
+            }
+        } else {
+            print(paste('Invalid format:', 
+                        format, 
+                        'try one of counts, tpm, fpkm'))
+            expression[[i]] <- NULL
         }
         i <- i + 1
     }
-    names(expression) <- formats
+    names(expression) <- tolower(formats)
     return(expression)
 }
 
@@ -58,15 +74,15 @@ fetchTME <- function(df, row, sparse, download_format){
                         # dataset has multiple identifiers for each gene
                         genes = row.names(expression),
                         geo_accession = df[row, 'accession'])
-
     tme_dataset <- SingleCellExperiment(list(counts = expression_list[[1]]),
                                     colData = data.frame(label=labels$truth),
                                     metadata = tme_data_meta)
     if (length(expression_list)>1){
-        for (i in seq(2,length(expression_list))){
+        expression_list <- expression_list[-1]
+        for (i in seq_along(expression_list)){
             #TODO make sure this works
                 # maybe find a way to make a list of sce's with vapply
-            altExp(tme_dataset, download_format[i]) <- SingleCellExperiment(list(counts=expression_list[[i]]))
+            altExp(tme_dataset, names(expression_list)[[i]]) <- SingleCellExperiment(list(counts=expression_list[[i]]))
         }
     }
 
