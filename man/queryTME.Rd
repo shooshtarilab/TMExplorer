@@ -17,7 +17,8 @@ queryTME(
   sequence_tech = NULL,
   organism = NULL,
   metadata_only = FALSE,
-  sparse = FALSE
+  sparse = FALSE,
+  download_format = c("counts")
 )
 }
 \arguments{
@@ -43,10 +44,15 @@ queryTME(
 
 \item{organism}{Search by source organism}
 
-\item{metadata_only}{Return rows of metadata instead of actual datasets. Defaults to FALSE}
+\item{metadata_only}{Return rows of metadata instead of actual datasets.
+Defaults to FALSE}
 
 \item{sparse}{Return expression as a sparse matrix.
-Uses less memory but is less convenient to view. Defaults to FALSE.}
+Uses less memory but is less convenient to view.
+Defaults to FALSE.}
+
+\item{download_format}{A list of formats to download.
+Can be counts, tpm, fpkm, etc. See metadata for available formats.}
 }
 \value{
 A list containing a table of metadata or
