@@ -2,7 +2,7 @@
 
 ## Introduction
 
-TMExplorer (Tumour Microenvironment Explorer) is a curated collection of scRNAseq datasets sequenced from tumours. It aims to provide a single point of entry for users looking to study the tumour microenvironment at the single-cell level. 
+TMExplorer (Tumour Microenvironment Explorer) is a curated collection of scRNAseq datasets sequenced from tumours. It aims to provide a single point of entry for users looking to study the tumour microenvironment gene expressions at the single-cell level. 
 
 Users can quickly search available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R. 
 
