@@ -51,14 +51,14 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 | author           | Search by first author                          | Patel, Tirosh, Chung    |
 | journal          | Search by publication journal                   | Science, Nature, Cell   |
 | year             | Search by year of publication                   | <2015, >2015, 2013-2015 |
-| pmid             | Search by publication ID                        | 24925914, 27124452      |
+| pmid             | Search by PubMed ID                             | 24925914, 27124452      |
 | sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  |
 | organism         | Search by source organism                       | Human, Mice             |
 | sparse           | Return expression in sparse matrices            | TRUE, FALSE             |
 
 #### Searching by year
 
-In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' or '2015>' will search for datasets published before or in 2015. '>2015' or '2015<' will search for datasets published in or after 2015.
+In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' will search for datasets published before or in 2015. '>2015' will search for datasets published in or after 2015.
 
 
 ### Getting your first dataset
@@ -141,7 +141,7 @@ To save the data from the earlier example to disk, use the following commands.
 > saveTME(res, '~/Downloads/GSE72056')
 [1] "Done! Check ~/Downloads/GSE72056 for files"
 ```
-The result is three CSV files that can be used in other programs. In the future we will support saving in other formats.
+The result is three CSV files (gene expressions, cell labels, and gene signatures) that can be used in other programs. In the future we will support saving in other formats.
 
 NOTE: `saveTME` is currently not compatible with sparse datasets. This is due to the size of some datasets and the memory required to convert them to a dense matrix that can be written to a csv file. To save the elements of a sparse object, use `write.table()` and `as.matrix(counts(res))`, keeping in mind that doing this with some of the larger datasets may cause R to crash.
 
