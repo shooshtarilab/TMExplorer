@@ -6,18 +6,17 @@ downloadTME <- function(df, row, column){
                             quiet = TRUE)
         return(readRDS(filename))
     } else {
-        return(NULL)
+        return()
     }
 
 }
 
 downloadMultipleFormats <- function(df, row, sparse, formats){
+    formats <- as.list(formats)
     valid_formats <- c('counts', 'tpm', 'fpkm')
     expression <- vector('list', length(formats))
     i <- 1
     for (format in formats){
-        #TODO input validation for formats
-            # counts should always be first, or the list should be named
         if (tolower(format) %in% valid_formats){
             if (sparse == FALSE){
                 expression[[i]] <- downloadTME(df, 
@@ -33,19 +32,25 @@ downloadMultipleFormats <- function(df, row, sparse, formats){
                                                 'expression_link', 
                                                 sep='_'))
             }
-            #this test is a nice idea but the item in the list 
-            # is removed if NULL is returned by downloadTME
             if (is.null(expression[[i]])){
                 print(paste(format, 
                             'unavailable for', 
                             df[row, 'accession'],
                             sep=' '))
+                # remove the unavailable format from the lists
+                expression[[i]] <- NULL
+                formats[[i]] <- NULL
+                i <- i-1
+                #TODO download other format for dataset if user wants
             }
         } else {
             print(paste('Invalid format:', 
                         format, 
                         'try one of counts, tpm, fpkm'))
+            # remove the invalid format from the lists
             expression[[i]] <- NULL
+            formats[[i]] <- NULL
+            i <- i-1
         }
         i <- i + 1
     }
@@ -74,15 +79,19 @@ fetchTME <- function(df, row, sparse, download_format){
                         # dataset has multiple identifiers for each gene
                         genes = row.names(expression),
                         geo_accession = df[row, 'accession'])
-    tme_dataset <- SingleCellExperiment(list(counts = expression_list[[1]]),
+    #see about adding named getters for new formats (named getters and setters man page)
+    tme_dataset <- SingleCellExperiment(expression_list[[1]],
                                     colData = data.frame(label=labels$truth),
                                     metadata = tme_data_meta)
+    assayNames(tme_dataset) <- names(expression_list)[[1]] 
     if (length(expression_list)>1){
         expression_list <- expression_list[-1]
         for (i in seq_along(expression_list)){
-            #TODO make sure this works
-                # maybe find a way to make a list of sce's with vapply
-            altExp(tme_dataset, names(expression_list)[[i]]) <- SingleCellExperiment(list(counts=expression_list[[i]]))
+            # maybe find a way to make a list of sce's with vapply
+            altExp(tme_dataset, names(expression_list)[[i]]) <- SingleCellExperiment(expression_list[[i]],
+                                                                                    colData = data.frame(label=labels$truth),
+                                                                                    metadata = tme_data_meta)
+            assayNames(altExp(tme_dataset, names(expression_list)[[i]])) <- names(expression_list)[[i]]
         }
     }
 

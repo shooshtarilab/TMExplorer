@@ -139,7 +139,7 @@ res = queryTME(has_truth = TRUE)
 This will return a list of all datasets that have true cell-types available. 
 You can see the cell types for the first dataset using the following command:
 ```{r, eval=FALSE}
-View(colData(res[[1]]))
+View(as.data.frame(colData(res[[1]])))
 ```
 ```{r, echo=FALSE}
 knitr::kable(head(colData(res[[1]])))
