@@ -6,7 +6,7 @@ downloadTME <- function(df, row, column){
                             quiet = TRUE)
         return(readRDS(filename))
     } else {
-        return()
+        return('')
     }
 
 }
@@ -32,7 +32,7 @@ downloadMultipleFormats <- function(df, row, sparse, formats){
                                                 'expression_link', 
                                                 sep='_'))
             }
-            if (is.null(expression[[i]])){
+            if (is.character(expression[[i]])){
                 print(paste(format, 
                             'unavailable for', 
                             df[row, 'accession'],
@@ -64,6 +64,9 @@ fetchTME <- function(df, row, sparse, download_format){
     labels <- downloadTME(df, row, 'truth_label_link')
     sigs <- downloadTME(df, row, 'signature_link')
 
+    if (length(expression_list)==0){
+        return(SingleCellExperiment()) #TODO this is a hacky fix for improper default param handling
+    }
     tme_data_meta <- list(signatures = sigs,
                         pmid = df[row, 'PMID'],
                         technology = df[row, 'Technology'],
@@ -73,16 +76,22 @@ fetchTME <- function(df, row, sparse, download_format){
                         tumour_type = df[row, 'tumor_type'],
                         patients = df[row, 'patients'],
                         tumours  = df[row, 'tumours'],
-                        cells = colnames(expression),
+                        cells = colnames(expression_list[[1]]),
                         #TODO maybe figure out how to make this a 
                         # dataframe with the first few columns if a 
                         # dataset has multiple identifiers for each gene
-                        genes = row.names(expression),
+                        genes = row.names(expression_list[[1]]),
                         geo_accession = df[row, 'accession'])
     #see about adding named getters for new formats (named getters and setters man page)
-    tme_dataset <- SingleCellExperiment(expression_list[[1]],
-                                    colData = data.frame(label=labels$truth),
-                                    metadata = tme_data_meta)
+    if (is.character(labels)){
+        tme_dataset <- SingleCellExperiment(expression_list[[1]],
+                                            metadata = tme_data_meta)
+    }else{
+        tme_dataset <- SingleCellExperiment(expression_list[[1]],
+                                            colData = data.frame(label=labels$truth),
+                                            metadata = tme_data_meta)
+    }
+
     assayNames(tme_dataset) <- names(expression_list)[[1]] 
     if (length(expression_list)>1){
         expression_list <- expression_list[-1]

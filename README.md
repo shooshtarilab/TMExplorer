@@ -2,11 +2,27 @@
 
 ## Introduction
 
-TMExplorer (Tumour Microenvironment Explorer) is a curated collection of scRNAseq datasets sequenced from tumours. It aims to provide a single point of entry for users looking to study the tumour microenvironment at the single-cell level. 
+TMExplorer (Tumour Microenvironment Explorer) is a curated collection of scRNAseq datasets sequenced from tumours. It aims to provide a single point of entry for users looking to study the tumour microenvironment gene expressions at the single-cell level. 
 
 Users can quickly search available datasets using the metadata table, and then download the datasets they are interested in for analysis. Optionally, users can save the datasets for use in applications other than R. 
 
 This package will improve the ease of studying the tumour microenvironment with single-cell sequencing. Developers may use this package to obtain data for validation of new algorithms and researchers interested in the tumour microenvironment may use it to study specific cancers more closely. 
+
+## System Requirements
+
+While many of the datasets included in this package are small enough to be loaded and stored, even as dense matrices, on machines with an 'average' amount of memory (8-32gb), there are a few larger datasets that cannot be fully manipulated without a significant amount of memory. With this in mind, we recommend using `sparse = TRUE` when possible and using a system with at least 64gb of RAM for full functionality.
+
+If you are experience crashes due to memory limitations, try using `sparse = TRUE` or grabbing datasets individually using the `geo_accession` parameter.
+
+### Large datasets
+
+The following is a list of datasets I was unable to convert between sparse and dense formats on my personal machine (Ryzen 5 3600, 16gb RAM)
+
+* Van Galen, Cell 2019, GSE116256
+* Azizi, Cell 2018, GSE114727
+* Lambrechts, Nature Med 2018, E-MTAB-6149
+* Davidson, bioRxiv 2018, E-MTAB-7427
+* Peng, Cell Research 2019, CRA001160
 
 ## Installation
 ``` 
@@ -51,14 +67,14 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 | author           | Search by first author                          | Patel, Tirosh, Chung    |
 | journal          | Search by publication journal                   | Science, Nature, Cell   |
 | year             | Search by year of publication                   | <2015, >2015, 2013-2015 |
-| pmid             | Search by publication ID                        | 24925914, 27124452      |
+| pmid             | Search by PubMed ID                             | 24925914, 27124452      |
 | sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  |
 | organism         | Search by source organism                       | Human, Mice             |
 | sparse           | Return expression in sparse matrices            | TRUE, FALSE             |
 
 #### Searching by year
 
-In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' or '2015>' will search for datasets published before or in 2015. '>2015' or '2015<' will search for datasets published in or after 2015.
+In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' will search for datasets published before or in 2015. '>2015' will search for datasets published in or after 2015.
 
 
 ### Getting your first dataset
@@ -141,7 +157,7 @@ To save the data from the earlier example to disk, use the following commands.
 > saveTME(res, '~/Downloads/GSE72056')
 [1] "Done! Check ~/Downloads/GSE72056 for files"
 ```
-The result is three CSV files that can be used in other programs. In the future we will support saving in other formats.
+The result is three CSV files (gene expressions, cell labels, and gene signatures) that can be used in other programs. In the future we will support saving in other formats.
 
 NOTE: `saveTME` is currently not compatible with sparse datasets. This is due to the size of some datasets and the memory required to convert them to a dense matrix that can be written to a csv file. To save the elements of a sparse object, use `write.table()` and `as.matrix(counts(res))`, keeping in mind that doing this with some of the larger datasets may cause R to crash.
 
