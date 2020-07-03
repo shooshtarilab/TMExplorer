@@ -48,7 +48,7 @@ queryTME <- function(geo_accession=NULL,
                     organism=NULL,
                     metadata_only=FALSE,
                     sparse = FALSE,
-                    download_format = c('counts')){
+                    download_format = NULL){
     #data("tme_meta")
     df <- tme_meta
     if (!is.null(geo_accession)) {

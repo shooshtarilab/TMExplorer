@@ -12,6 +12,11 @@ downloadTME <- function(df, row, column){
 }
 
 downloadMultipleFormats <- function(df, row, sparse, formats){
+    default_format <- FALSE
+    if (is.null(formats)){
+        formats <- list('counts')
+        default_format <- TRUE
+    }
     formats <- as.list(formats)
     valid_formats <- c('counts', 'tpm', 'fpkm')
     expression <- vector('list', length(formats))
@@ -38,9 +43,22 @@ downloadMultipleFormats <- function(df, row, sparse, formats){
                             df[row, 'accession'],
                             sep=' '))
                 # remove the unavailable format from the lists
-                expression[[i]] <- NULL
-                formats[[i]] <- NULL
-                i <- i-1
+                if (default_format){
+                    j <- 24
+                    while (df[row, j]==''){
+                        j <- j+1
+                    }
+                    newform <- strsplit(gsub("spare_", "", colnames(df)[[j]]), "_")[[1]][[1]]
+                    print(paste("Downloading", newform, "instead.", sep=" "))
+                    expression[[i]] <- downloadTME(df,
+                                                row,
+                                                j)
+
+                }else{
+                    expression[[i]] <- NULL
+                    formats[[i]] <- NULL
+                    i <- i-1
+                }
                 #TODO download other format for dataset if user wants
             }
         } else {
