@@ -3,3 +3,6 @@ Changes in version 0.99.0 (2020-06-22)
 
 Changes in version 0.99.1 (2020-06-25)
 + Now uses SingleCellExperiment objects
+
+Changes in version 0.99.2 (2020-07-03)
++ Fixed missing cell type labels in some datasets
