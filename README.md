@@ -71,7 +71,7 @@ The `metatadata_only` argument can be applied alongside any other argument in or
 | sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  |
 | organism         | Search by source organism                       | Human, Mice             |
 | sparse           | Return expression in sparse matrices            | TRUE, FALSE             |
-
+| download_format  | Specify count formats for download              | counts, c('counts', tpm')|
 #### Searching by year
 
 In order to search by single years and a range of years, the package looks for specific patterns. '2013-2015' will search for datasets published between 2013 and 2015, inclusive. '<2015' will search for datasets published before or in 2015. '>2015' will search for datasets published in or after 2015.
@@ -122,6 +122,13 @@ Specific metadata entries can be accessed by specifying the attribute name, for 
 > metadata(res[[1]])$pmid
 ```
 
+#### Downloading multiple count formats
+
+In order to make our data as approachable as possible, many datasets have the data available in multiple normalisation schemes. These are retrieved using the `download_format` parameter. Look at the metadata table to see available formats, then list the ones you want under `download_format = c(...)`. 
+
+When downloading a single format, if it is unavailable for any particular dataset, a message will be printed to the console and an empty `SingleCellExperiment` object will be returned.
+
+When downloading more than one format, additional formats are stored as `altExps` in the `SingleCellExperiment` object. You can access them with the `altExp()` function. If any format is unavailable for a dataset, only available formats will be downloaded and returned.
 
 ### Example: Returning all datasets with cell-type labels
 
