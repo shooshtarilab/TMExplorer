@@ -3,6 +3,7 @@ downloadTME <- function(df, row, column){
         filename <- tempfile()
         utils::download.file(df[row,column], 
                             destfile=filename, 
+                            mode="wb",
                             quiet = TRUE)
         return(readRDS(filename))
     } else {
