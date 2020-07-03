@@ -6,3 +6,7 @@ Changes in version 0.99.1 (2020-06-25)
 
 Changes in version 0.99.2 (2020-07-03)
 + Fixed missing cell type labels in some datasets
+
+Changes in version 0.99.3 (2020-07-03)
++ Fixed a bug when downloading data on Windows
+
