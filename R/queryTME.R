@@ -42,7 +42,6 @@ queryTME <- function(geo_accession=NULL,
                     organism=NULL,
                     metadata_only=FALSE,
                     sparse = FALSE){
-    #data("tme_meta")
     df <- tme_meta
     if (!is.null(geo_accession)) {
         #TODO maybe rename this to something else since not all datasets come from geo
@@ -115,8 +114,6 @@ queryTME <- function(geo_accession=NULL,
     } else {
         df_list <- list()
         for (row in seq_len(nrow(df))){
-            #geo <- df[row, 'accession']
-            #print(geo)
             df_list[[row]] <- fetchTME(df, row, sparse)
         }
         return(df_list)

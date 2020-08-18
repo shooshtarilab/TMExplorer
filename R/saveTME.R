@@ -25,7 +25,6 @@ saveTME <- function(object, outdir){
     } else {
         dir.create(outdir)
     }
-    # need to test this on windows, make sure it still works
     expr_name <- file.path(outdir, 
                             paste(object@metadata$geo_accession,
                             "expression.csv", 
