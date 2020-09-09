@@ -157,7 +157,7 @@ If you are experience crashes due to memory limitations, try using `sparse = TRU
 
 ### Large datasets
 
-The following is a list of datasets I was unable to convert between sparse and dense formats on my personal machine (Ryzen 5 3600, 16gb RAM)
+The following is a list of datasets that can not be converted between sparse and dense formats on a personal machine (Ryzen 5 3600, 16gb RAM)
 
 * Van Galen, Cell 2019, GSE116256
 * Azizi, Cell 2018, GSE114727
