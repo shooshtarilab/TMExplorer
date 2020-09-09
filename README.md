@@ -8,21 +8,6 @@ Users can quickly search available datasets using the metadata table, and then d
 
 This package will improve the ease of studying the tumour microenvironment with single-cell sequencing. Developers may use this package to obtain data for validation of new algorithms and researchers interested in the tumour microenvironment may use it to study specific cancers more closely. 
 
-## System Requirements
-
-While many of the datasets included in this package are small enough to be loaded and stored, even as dense matrices, on machines with an 'average' amount of memory (8-32gb), there are a few larger datasets that cannot be fully manipulated without a significant amount of memory. With this in mind, we recommend using `sparse = TRUE` when possible and using a system with at least 64gb of RAM for full functionality.
-
-If you are experience crashes due to memory limitations, try using `sparse = TRUE` or grabbing datasets individually using the `geo_accession` parameter.
-
-### Large datasets
-
-The following is a list of datasets I was unable to convert between sparse and dense formats on my personal machine (Ryzen 5 3600, 16gb RAM)
-
-* Van Galen, Cell 2019, GSE116256
-* Azizi, Cell 2018, GSE114727
-* Lambrechts, Nature Med 2018, E-MTAB-6149
-* Davidson, bioRxiv 2018, E-MTAB-7427
-* Peng, Cell Research 2019, CRA001160
 
 ## Installation
 ``` 
@@ -162,3 +147,20 @@ The result is three CSV files (gene expressions, cell labels, and gene signature
 NOTE: `saveTME` is currently not compatible with sparse datasets. This is due to the size of some datasets and the memory required to convert them to a dense matrix that can be written to a csv file. To save the elements of a sparse object, use `write.table()` and `as.matrix(counts(res))`, keeping in mind that doing this with some of the larger datasets may cause R to crash.
 
 ![Screenshot of the saveTME files](docs/saveTME_files.png)
+
+
+## System Requirements
+
+While many of the datasets included in this package are small enough to be loaded and stored, even as dense matrices, on machines with an 'average' amount of memory (8-32gb), there are a few larger datasets that cannot be fully manipulated without a significant amount of memory. With this in mind, we recommend using `sparse = TRUE` when possible and using a system with at least 64gb of RAM for full functionality.
+
+If you are experience crashes due to memory limitations, try using `sparse = TRUE` or grabbing datasets individually using the `geo_accession` parameter.
+
+### Large datasets
+
+The following is a list of datasets I was unable to convert between sparse and dense formats on my personal machine (Ryzen 5 3600, 16gb RAM)
+
+* Van Galen, Cell 2019, GSE116256
+* Azizi, Cell 2018, GSE114727
+* Lambrechts, Nature Med 2018, E-MTAB-6149
+* Davidson, bioRxiv 2018, E-MTAB-7427
+* Peng, Cell Research 2019, CRA001160
