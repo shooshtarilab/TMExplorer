@@ -24,8 +24,8 @@
 #' one or more SingleCellExperiment objects
 #' @examples
 #' res <- queryTME(metadata_only = TRUE)
-#' \dontrun{
 #' res <- queryTME(geo_accession = "GSE72056")
+#' \dontrun{
 #' res <- queryTME(has_truth = TRUE, has_signatures = TRUE)
 #' }
 
@@ -44,8 +44,11 @@ queryTME <- function(geo_accession=NULL,
                     sparse = FALSE){
     df <- tme_meta
     if (!is.null(geo_accession)) {
-        #TODO maybe rename this to something else since not all datasets come from geo
         df <- df[df$accession == geo_accession,]
+        #TODO also need to remove it here, assuming it isn't the requested one 
+        #(although i suppose if it isn't asked for it isn't possible to make it past this check)
+    } else {
+        #TODO remove the added example data so it doesn't get included in analysis
     }
     if (!is.null(score_type)) {
         #TODO eventually this will become a way to select which type of score you want to 
