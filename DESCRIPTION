@@ -39,6 +39,5 @@ biocViews:
     SequencingData, 
     ExpressionData, 
     GEO, 
-    PackageTypeData,
-    AnnotationHub
+    PackageTypeData
 BugReports: https://github.com/shooshtarilab/TMExplorer/issues
