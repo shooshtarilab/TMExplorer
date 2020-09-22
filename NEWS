@@ -10,3 +10,8 @@ Changes in version 0.99.2 (2020-07-03)
 Changes in version 0.99.3 (2020-07-03)
 + Fixed a bug when downloading data on Windows
 
+Changes in version 0.99.4
+
+Changes in version 0.99.5
++ Updated man pages and cleaned up some code.
+
