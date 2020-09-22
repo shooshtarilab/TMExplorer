@@ -2,7 +2,7 @@ Package: TMExplorer
 Title: 
     A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datasets and 
     Correspodnding Metadata 
-Version: 0.99.4
+Version: 0.99.5
 Authors@R: 
     c(person(given = "Erik",
             family = "Christensen",
@@ -25,7 +25,7 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: FALSE
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
