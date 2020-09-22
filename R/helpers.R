@@ -32,9 +32,9 @@ fetchTME <- function(df, row, sparse){
                         patients = df[row, 'patients'],
                         tumours  = df[row, 'tumours'],
                         cells = colnames(expression),
-                        #TODO maybe figure out how to make this a dataframe with the 
-                        #first few columns if a dataset has multiple identifiers for
-                        #each gene
+                        #TODO maybe figure out how to make this a dataframe with
+                        #the first few columns if a dataset has multiple 
+                        #identifiers for each gene
                         genes = row.names(expression),
                         geo_accession = df[row, 'accession'])
     if (is.null(labels)){
@@ -42,8 +42,8 @@ fetchTME <- function(df, row, sparse){
                                             metadata = tme_data_meta)
     }else{
         tme_dataset <- SingleCellExperiment(list(counts = expression),
-                                            colData = data.frame(label=labels$truth),
-                                            metadata = tme_data_meta)
+                                    colData = data.frame(label=labels$truth),
+                                    metadata = tme_data_meta)
     }
 
 

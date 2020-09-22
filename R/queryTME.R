@@ -1,20 +1,24 @@
 #' A function to query TME datasets available in this package
 #'
-#' This function allows you to search and subset included TME datasets
-#' @param geo_accession Search by geo accession number
+#' This function allows you to search and subset included TME datasets. 
+#' A list of tme_data objects matching the provided options will be returned, 
+#' if queryTME is called without any options it will retrieve all available datasets. 
+#' This should only be done on machines with a large amount of ram (>64gb) because some datasets are quite large.
+#' In most cases it is recommended to instead filter databases with some criteria.
+#' @param geo_accession Search by geo accession number. Good for returning individual datasets
 #' @param score_type Search by type of score (TPM, FPKM, raw count)
-#' @param has_signatures Return datasets that have gene signatures available (TRUE/FALSE)
-#' @param has_truth Search by the presence of known cell-type labels
-#' @param tumour_type Search by type of tumour contained in the dataset
-#' @param author Search by author
-#' @param journal Search by journal
-#' @param year Search by exact year or year ranges with '<', '>', or '-'
-#' @param pmid Search by Pubmed ID
-#' @param sequence_tech Search by sequencing technology
-#' @param organism Search by source organism
-#' @param metadata_only Return rows of metadata instead of actual datasets. Defaults to FALSE
+#' @param has_signatures Return only those datasets that have cell-type gene signatures available, or only those without (TRUE/FALSE)
+#' @param has_truth Return only those datasets that have cell-type annotations available, or only those without annotations
+#' @param tumour_type Search by type of tumour represented by the dataset
+#' @param author Search by the author who published the dataset
+#' @param journal Search by the journal the dataset was published in.
+#' @param year Search by exact year or year ranges with '<', '>', or '-'. For example, you can return datasets newer than 2013 with '>2013'
+#' @param pmid Search by Pubmed ID associated with the study. Good for returning individual datasets
+#' @param sequence_tech Search by sequencing technology used to sample the cells.
+#' @param organism Search by source organism used in the study, for example human or mouse.
+#' @param metadata_only Return rows of metadata instead of actual datasets. Useful for exploring what data is available without actually downloading data. Defaults to FALSE
 #' @param sparse Return expression as a sparse matrix. 
-#'                  Uses less memory but is less convenient to view. Defaults to FALSE.
+#'                  Uses less memory but is less convenient to view, recommended only if encounter memory issues with dense data. Defaults to FALSE.
 #' @keywords tumour
 #' @importFrom methods new
 #' @importFrom Matrix Matrix
@@ -22,12 +26,18 @@
 #' @export
 #' @return A list containing a table of metadata or 
 #' one or more SingleCellExperiment objects
+#'
 #' @examples
+#' 
+#' ## Retrieve the metadata table to see what data is available
 #' res <- queryTME(metadata_only = TRUE)
+#' 
+#' ## Retrieve a filtered metadata table that only shows datasets with 
+#' ## cell type annotations and cell type gene signatures
+#' res <- queryTME(has_truth = TRUE, has_signatures = TRUE, metadata_only = TRUE)
+#' 
+#' ## Retrieve a single dataset identified from the table
 #' res <- queryTME(geo_accession = "GSE72056")
-#' \dontrun{
-#' res <- queryTME(has_truth = TRUE, has_signatures = TRUE)
-#' }
 
 queryTME <- function(geo_accession=NULL,
                     score_type=NULL,

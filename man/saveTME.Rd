@@ -7,22 +7,28 @@
 saveTME(object, outdir)
 }
 \arguments{
-\item{object}{The tme_data object to be written to disk}
+\item{object}{The tme_data object to be written to disk, this should be an individual dataset returned by queryTME.}
 
-\item{outdir}{The directory to save the tme_data in}
+\item{outdir}{The directory to save the tme_data in, the directory should not exist yet.}
 }
 \value{
 Nothing
 }
 \description{
 This function allows you to save the expression,
-labels, and cell types to disk in csv format
+labels, and cell types to disk in csv format. It takes two options:
+an object to save and a directory to save in. Multiple files will be created in
+the provided output directory, one for each type of data available in the tme_data object
+(expression, gene signatures, cell type annotations).
 }
 \examples{
+
+# Retrieve a previously identified dataset (see queryTME) and save it to disk
 \dontrun{res <- queryTME(geo_accession = 'GSE72056')[[1]]}
 \dontshow{res <- SingleCellExperiment(list(counts=matrix()))
-tdir = tempdir()
-filename = file.path(tdir, 'save_tme_data')} 
-saveTME(res, filename)
+         tdir = tempdir()
+         output_directory_name = file.path(tdir, 'save_tme_data')} 
+saveTME(res, output_directory_name)
+
 }
 \keyword{tumour}
