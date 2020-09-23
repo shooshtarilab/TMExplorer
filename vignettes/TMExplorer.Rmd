@@ -1,0 +1,180 @@
+---
+title: "TMExplorer"
+author: "Erik Christensen"
+output: BiocStyle::html_document
+package: TMExplorer
+vignette: >
+  %\VignetteIndexEntry{TMExplorer}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TMExplorer)
+```
+# Introduction
+
+TMExplorer (Tumour Microenvironment Explorer) is a curated collection of scRNAseq datasets sequenced from tumours. 
+It aims to provide a single point of entry for users looking to study the tumour microenvironment at the single-cell level. 
+
+Users can quickly search available datasets using the metadata table, and then download the datasets they are interested in for analysis. 
+Optionally, users can save the datasets for use in applications other than R. 
+
+This package will improve the ease of studying the tumour microenvironment with single-cell sequencing. 
+Developers may use this package to obtain data for validation of new algorithms and researchers interested in the tumour microenvironment may use it to study specific cancers more closely. 
+
+# Exploring available datasets
+
+Start by exploring the available datasets through metadata.
+
+```{r}
+res = queryTME(metadata_only = TRUE)
+```
+```{r, echo=FALSE}
+knitr::kable(head(res[[1]][,1:5]))
+```
+
+This will return a list containing a single dataframe of metadata for all available datasets. 
+View the metadata with `View(res[[1]])` and then check `?queryTME` for a description of searchable fields.
+
+Note: in order to keep the function's interface consistent, `queryTME` always returns a list of objects, even if there is only one object. 
+You may prefer running `res = queryTME(metadata_only = TRUE)[[1]]` in order to save the dataframe directly.
+
+The `metatadata_only` argument can be applied alongside any other argument in order to examine only datasets that have certain qualities. 
+You can, for instance, view only breast cancer datasets by using 
+
+```{r}
+res = queryTME(tumour_type = 'Breast cancer', metadata_only = TRUE)[[1]]
+```
+```{r, echo=FALSE}
+knitr::kable(head(res[,1:5]))
+```
+
+Search Parameter | Description                                     | Examples                
+---------------- | ----------------------------------------------- | ----------------------- 
+geo_accession    | Search by GEO accession number                  | GSE72056, GSE57872      
+score_type       | Search by type of score shown in $expression    | TPM, RPKM, FPKM         
+has_signatures   | Filter by presence of cell-type gene signatures | TRUE, FALSE             
+has_truth        | Filter by presence of cell-type labels          | TRUE, FALSE             
+tumour_type      | Search by tumour type                           | Breast cancer, Melanoma 
+author           | Search by first author                          | Patel, Tirosh, Chung    
+journal          | Search by publication journal                   | Science, Nature, Cell   
+year             | Search by year of publication                   | <2015, >2015, 2013-2015 
+pmid             | Search by publication ID                        | 24925914, 27124452      
+sequence_tech    | Search by sequencing technology                 | SMART-seq, Fluidigm C1  
+organism         | Search by source organism                       | Human, Mice             
+sparse           | Return expression in sparse matrices            | TRUE, FALSE
+
+: (\#tab:table1) Search parameters for `queryTME` alongside example values.
+
+## Searching by year
+
+In order to search by single years and a range of years, the package looks for specific patterns. 
+'2013-2015' will search for datasets published between 2013 and 2015, inclusive. 
+'<2015' or '2015>' will search for datasets published before or in 2015. 
+'>2015' or '2015<' will search for datasets published in or after 2015.
+
+# Getting datasets
+
+Once you've found a field to search on, you can get your data. 
+For this example, we're pulling a specific dataset by its GEO ID.
+
+```{r}
+res = queryTME(geo_accession = "GSE81861")
+```
+
+This will return a list containing dataset GSE72056. 
+The dataset is stored as a `SingleCellExperiment` object,
+which has the following metadata list
+
+| Attribute     | Description |
+| ------------- | --------------------------------------------------------------- |
+| signatures    | A `data.frame` containing the cell types and a list of genes that represent that cell type |
+| cells         | A list of cells included in the study |
+| genes         | A list of genes included in the study |
+| pmid          | The PubMed ID of the study |
+| technology    | The sequencing technology used |
+| score_type    | The type of score shown in `tme_data$expression` |
+| organism      | The type of organism from which cells were sequenced |
+| author        | The first author of the paper presenting the data |
+| tumour_type   | The type of tumour sequenced |
+| patients      | The number of patients included in the study |
+| tumours       | The number of tumours sampled by the study |
+| geo_accession | The GEO accession ID for the dataset |
+
+: (\#tab:table2) Metadata attributes in the `SingleCellExperiment` object.
+
+To access the expression data for a result, use
+```{r, eval=FALSE}
+View(counts(res[[1]]))
+```
+```{r, echo=FALSE}
+knitr::kable(head(counts(res[[1]])[,1:2]))
+```
+
+Cell type labels are stored under `colData(res[[1]])` for datasets 
+for which cell type labels are available
+
+Metadata is stored in a named list accessible by `metadata(res[[1]])`. 
+Specific entries can be accessed by attribute name.
+
+```{r}
+metadata(res[[1]])$pmid
+```
+
+## Example: Returning all datasets with cell-type labels
+
+Say you want to measure the performance of cell-type classification methods. 
+To do this, you need datasets that have the true cell-types available. 
+```{r, eval=FALSE}
+res = queryTME(has_truth = TRUE)
+```
+This will return a list of all datasets that have true cell-types available. 
+You can see the cell types for the first dataset using the following command:
+```{r, eval=FALSE}
+View(colData(res[[1]]))
+```
+```{r, echo=FALSE}
+knitr::kable(head(colData(res[[1]])))
+```
+
+The first column of this dataframe contains the cell barcode, and the second contains the cell type. 
+
+## Example: Returning all datasets with cell-type labels and cell-type gene signatures
+
+Some cell-type classification methods require a list of gene signatures, to return only datasets that have cell-type gene signatures available, use:
+```{r, eval=FALSE}
+res = queryTME(has_truth = TRUE, has_signatures = TRUE)
+View(metadata(res[[1]])$signatures)
+```
+```{r, echo=FALSE}
+knitr::kable(metadata(res[[1]])$signatures[,1:3])
+```
+
+# Saving Data
+
+To facilitate the use of any or all datasets outside of R, you can use `saveTME()`. 
+`saveTME` takes two parameters, one a `tme_data` object to be saved, and the other the directory you would like data to be saved in. 
+Note that the output directory should not already exist.
+
+To save the data from the earlier example to disk, use the following commands.
+
+```{r, eval=FALSE}
+res = queryTME(geo_accession = "GSE72056")[[1]]
+saveTME(res, '~/Downloads/GSE72056')
+```
+The result is three CSV files that can be used in other programs. 
+In the future we will support saving in other formats.
+
+
+# Session Information
+```{r}
+sessionInfo()
+```
