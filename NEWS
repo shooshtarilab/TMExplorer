@@ -15,3 +15,6 @@ Changes in version 0.99.4
 Changes in version 0.99.5
 + Updated man pages and cleaned up some code.
 
+Changes in version 0.99.6
++ Renamed Vignette to TMExplorer ("tutorial" was too generic)
++ More man page updates
