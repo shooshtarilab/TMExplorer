@@ -17,8 +17,9 @@
 #' @examples
 #' 
 #' # Retrieve a previously identified dataset (see queryTME) and save it to disk
-#' \dontrun{res <- queryTME(geo_accession = 'GSE72056')[[1]]}
-#' \dontshow{res <- SingleCellExperiment(list(counts=matrix()))
+#' res <- queryTME(geo_accession = 'GSE72056')[[1]]
+#' \dontshow{
+#'          #res <- SingleCellExperiment(list(counts=matrix()))
 #'          tdir = tempdir()
 #'          output_directory_name = file.path(tdir, 'save_tme_data')} 
 #' saveTME(res, output_directory_name)
