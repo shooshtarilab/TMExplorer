@@ -2,6 +2,8 @@
 
 export(queryTME)
 export(saveTME)
+importFrom(BiocFileCache,BiocFileCache)
+importFrom(BiocFileCache,bfcadd)
 importFrom(Matrix,Matrix)
 importFrom(SingleCellExperiment,SingleCellExperiment)
 importFrom(SingleCellExperiment,colData)

@@ -1,7 +1,7 @@
 Package: TMExplorer
 Title: 
-    A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datasets and 
-    Correspodnding Metadata 
+    A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datasets 
+    and Correspodnding Metadata 
 Version: 1.1.0
 Authors@R: 
     c(person(given = "Erik",
@@ -16,11 +16,12 @@ Authors@R:
             role = c("aut"),
             email="pshoosh@uwo.ca"))
 Description: 
-    This package provides a tool to search and download a collection of tumour microenvironment 
-    single-cell RNA sequencing datasets and their metadata. TMExplorer aims to act as a single 
-    point of entry for users looking to study the tumour microenvironment at the single cell 
-    level. Users can quickly search available datasets using the metadata table and then 
-    download the ones they are interested in for analysis.
+    This package provides a tool to search and download a collection of tumour 
+    microenvironment single-cell RNA sequencing datasets and their metadata. 
+    TMExplorer aims to act as a single point of entry for users looking to study
+    the tumour microenvironment at the single cell level. Users can quickly 
+    search available datasets using the metadata table and then download the 
+    ones they are interested in for analysis.
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: FALSE
@@ -30,8 +31,8 @@ VignetteBuilder: knitr
 Suggests: BiocStyle, knitr, rmarkdown
 Imports: methods, Matrix
 Depends: 
-    R (>= 4.0),
-    SingleCellExperiment
+    R (>= 4.1),
+    SingleCellExperiment,
     BiocFileCache
 biocViews: 
     CancerData, 

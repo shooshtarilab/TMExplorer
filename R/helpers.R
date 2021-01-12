@@ -1,10 +1,7 @@
-downloadTME <- function(df, row, column){
+#' @importFrom BiocFileCache BiocFileCache bfcadd
+downloadTME <- function(df, row, column, bfc){
     if (df[row, column] != ''){
-        filename <- tempfile()
-        utils::download.file(df[row,column], 
-                            destfile=filename, 
-                            mode="wb",
-                            quiet = TRUE)
+        filename <- bfcadd(bfc, "TestWeb", fpath=df[row,column])
         return(readRDS(filename))
     } else {
         return(NULL)
@@ -14,18 +11,20 @@ downloadTME <- function(df, row, column){
 
 fetchTME <- function(df, row, sparse){
     #download the data into dataframes
+    cache_path <- tempfile()
+    bfc <- BiocFileCache(cache_path, ask = FALSE)
     if (sparse == FALSE){
-        expression <- downloadTME(df, row, 'expression_link')
+        expression <- downloadTME(df, row, 'expression_link', bfc)
     } else if (sparse == TRUE){
-        expression <- downloadTME(df, row, 'sparse_expression_link')
+        expression <- downloadTME(df, row, 'sparse_expression_link', bfc)
     }
-    labels <- downloadTME(df, row, 'truth_label_link')
-    sigs <- downloadTME(df, row, 'signature_link')
+    labels <- downloadTME(df, row, 'truth_label_link', bfc)
+    sigs <- downloadTME(df, row, 'signature_link', bfc)
 
     tme_data_meta <- list(signatures = sigs,
                         pmid = df[row, 'PMID'],
                         technology = df[row, 'Technology'],
-                        score_type = df[row, 'score_type'], 
+                        score_type = df[row, 'score_type'],
                         organism  = df[row, 'Organism'],
                         author = df[row, 'author'],
                         tumour_type = df[row, 'tumor_type'],
@@ -33,7 +32,7 @@ fetchTME <- function(df, row, sparse){
                         tumours  = df[row, 'tumours'],
                         cells = colnames(expression),
                         #TODO maybe figure out how to make this a dataframe with
-                        #the first few columns if a dataset has multiple 
+                        #the first few columns if a dataset has multiple
                         #identifiers for each gene
                         genes = row.names(expression),
                         geo_accession = df[row, 'accession'])
