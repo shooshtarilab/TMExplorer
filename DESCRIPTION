@@ -32,6 +32,7 @@ Imports: methods, Matrix
 Depends: 
     R (>= 4.0),
     SingleCellExperiment
+    BiocFileCache
 biocViews: 
     CancerData, 
     SingleCellData, 
