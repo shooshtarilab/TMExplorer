@@ -19,6 +19,10 @@ fetchTME <- function(df, row, sparse){
         expression <- downloadTME(df, row, 'sparse_expression_link', bfc)
     }
     labels <- downloadTME(df, row, 'truth_label_link', bfc)
+    if (!is.null(labels) && length(labels$cell)!=length(colnames(expression))){
+        col.num <- which(colnames(expression) %in% labels$cell)
+        expression <- expression[,col.num]
+    }
     sigs <- downloadTME(df, row, 'signature_link', bfc)
 
     tme_data_meta <- list(signatures = sigs,
