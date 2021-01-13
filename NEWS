@@ -16,3 +16,6 @@ Changes in version 0.99.5
 Changes in version 0.99.6
 + Renamed Vignette to TMExplorer ("tutorial" was too generic)
 + More man page updates
+
+Changes in version 1.1.1
++ Now uses BiocFileCache to download data.
