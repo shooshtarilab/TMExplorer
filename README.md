@@ -13,9 +13,7 @@ This package will improve the ease of studying the tumour microenvironment with 
 ``` 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("SingleCellExperiment")
-library(devtools)
-install_github("shooshtarilab/TMExplorer")
+BiocManager::install("TMExplorer")
 ```
 
 # Tutorial
