@@ -1,0 +1,76 @@
+---
+title: "Preparing Data"
+author: "Erik Christensen"
+date: "24/03/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(TMExplorer)
+```
+
+## Preparing Datasets For Upload
+
+This is document is a brief example on how data can be prepared for upload to 
+TMExplorer. I'll use GSE75688 since it has additional columns in the matrix and
+a separate cell-type info file.
+
+First let's look at the dataset in TMExplorer.
+
+```{r TMExplorer_counts}
+gse75688 <- queryTME(geo_accession = 'GSE75688')[[1]]
+dim(counts(gse75688))
+counts(gse75688)[1:5,1:4]
+```
+
+The counts file is a 57915x563 matrix with a single column of rownames. This is 
+the target format. Let's compare that to the dataset downloaded from GEO.
+
+```{r GEO_counts}
+geo <- read.csv('GSE75688_GEO_processed_Breast_Cancer_raw_TPM_matrix.txt.gz',
+                sep='\t')
+dim(geo)
+geo[1:5,1:4]
+```
+
+The GEO matrix has three additional columns. In order to match the target 
+format, we'll drop the `gene_type` column, merge the `gene_id` and `gene_name` 
+columns, then set the merged result as the rownames. NOTE: The rownames here can
+be gene names, gene IDs, some combination of the two like we have here, but they must be unique (R cannot set non-unique rownames) and identify the gene (instead of just being numbers).
+
+```{r counts_preparation}
+geo$gene_type <- NULL
+geo$gene_id <- paste(geo$gene_name, geo$gene_id,sep='_')
+rownames(geo) <- geo$gene_id
+geo$gene_id <- NULL
+geo$gene_name <- NULL
+
+dim(geo)
+geo[1:5,1:4]
+all(geo == counts(gse75688))
+```
+
+After modification, the dimensions are the same and all values in the matrix 
+match the file in TMExplorer. If this was a new dataset, the modified `geo` 
+object would be what you submit as the genes x cells matrix.
+
+This dataset also has cell type information available. In order to prepare that
+for TMExplorer we'll need to load in the file and remove the extra columns.
+```{r celltypes}
+geo_cellinfo <- read.csv('GSE75688_final_sample_information.txt',sep='\t')
+head(geo_cellinfo)
+geo_cellinfo$type <- NULL
+geo_cellinfo$index <- NULL
+geo_cellinfo$index2 <- NULL
+names(geo_cellinfo)[2] <- "label"
+dim(geo_cellinfo)
+head(geo_cellinfo)
+```
+
+This file contains the cell type for each cell in the original dataset, as shown
+below.
+
+```{r}
+table(geo_cellinfo$label)
+```
