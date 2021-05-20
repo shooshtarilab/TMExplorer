@@ -39,7 +39,9 @@ fetchTME <- function(df, row, sparse){
                         #the first few columns if a dataset has multiple
                         #identifiers for each gene
                         genes = row.names(expression),
-                        geo_accession = df[row, 'accession'])
+                        geo_accession = df[row, 'accession'],
+                        summary = df[row,'summary']
+                        )
     if (is.null(labels)){
         tme_dataset <- SingleCellExperiment(list(counts = expression),
                                             metadata = tme_data_meta)

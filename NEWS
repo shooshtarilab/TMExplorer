@@ -25,3 +25,6 @@ Changes in version 1.1.2
 
 Changes in version 1.1.2
 + Added new datasets: GSE150430, GSE154778, GSE125969, GSE134520, GSE123366
+
+Changes in version 1.2.1
++ Added a summary column to the metadata table and SingleCellExperiment metadata
