@@ -121,19 +121,18 @@ queryTME <- function(geo_accession=NULL,
     if (!is.null(organism)) {
         df <- df[toupper(df$Organism) == toupper(organism),]
     }
+    
+    rownames(df) = NULL
     if (metadata_only) {
         df[,c('signature_link', 'expression_link', 'truth_label_link','sparse_expression_link')] <- list(NULL)
-        rownames(df) = NULL
         return(list(df))
     } else {
         df_list <- list()
         for (row in seq_len(nrow(df))){
             df_list[[row]] <- fetchTME(df, row, sparse)
         }
-        rownames(df) = NULL
         return(df_list)
     }
-
     return(list(df))
 
 }
