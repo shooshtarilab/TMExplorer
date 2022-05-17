@@ -3,7 +3,7 @@ downloadTME <- function(df, row, column, bfc){
     if (is.na(df[row,column])){
         return(NULL)
     } else {
-        filename <- bfcadd(bfc, "TestWeb", fpath=df[row,column])
+        filename <- bfcadd(bfc, "TestWeb", fpath=toString(df[row,column]))
         return(readRDS(filename))
     }
     
