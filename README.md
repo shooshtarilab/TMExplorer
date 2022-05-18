@@ -17,7 +17,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("TMExplorer")
 ```
 
-2. Install from GitHub
+2. Install from GitHub for latest development release
 ``` 
 library(devtools)
 install_github("shooshtarilab/TMExplorer")
