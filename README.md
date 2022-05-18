@@ -10,11 +10,18 @@ This package will improve the ease of studying the tumour microenvironment with 
 
 
 ## Installation
+1. Install from Bioconductor
 ``` 
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 BiocManager::install("TMExplorer")
 ```
+
+2. Install from GitHub for latest development release
+``` 
+library(devtools)
+install_github("shooshtarilab/TMExplorer")
+``` 
 
 # Tutorial
 
