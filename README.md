@@ -20,7 +20,7 @@ BiocManager::install("TMExplorer")
 2. Install from GitHub
 ``` 
 library(devtools)
-install_github(shooshtarilab/TMExplorer)
+install_github("shooshtarilab/TMExplorer")
 ``` 
 
 # Tutorial
