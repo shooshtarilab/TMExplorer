@@ -133,7 +133,5 @@ queryTME <- function(geo_accession=NULL,
         rownames(df) = NULL
         return(df_list)
     }
-
     return(list(df))
-
 }

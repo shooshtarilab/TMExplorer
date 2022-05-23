@@ -50,8 +50,5 @@ fetchTME <- function(df, row, sparse){
                                     colData = data.frame(label=labels$truth),
                                     metadata = tme_data_meta)
     }
-
-
     return(tme_dataset)
-
 }
