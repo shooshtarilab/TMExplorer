@@ -1,12 +1,12 @@
 #' @importFrom BiocFileCache BiocFileCache bfcadd
 downloadTME <- function(df, row, column, bfc){
-    if (df[row, column] != ''){
-        filename <- bfcadd(bfc, "TestWeb", fpath=df[row,column])
-        return(readRDS(filename))
-    } else {
+    if (is.na(df[row,column])){
         return(NULL)
+    } else {
+        filename <- bfcadd(bfc, "TestWeb", fpath=toString(df[row,column]))
+        return(readRDS(filename))
     }
-
+    
 }
 
 fetchTME <- function(df, row, sparse){
