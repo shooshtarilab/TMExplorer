@@ -23,7 +23,6 @@
 #'          tdir = tempdir()
 #'          output_directory_name = file.path(tdir, 'save_tme_data')} 
 #' saveTME(res, output_directory_name)
-#' 
 saveTME <- function(object, outdir){
     if (!is(object,"SingleCellExperiment")){
         stop('object parameter must be of type SingleCellExperiment')
