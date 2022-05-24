@@ -2,7 +2,11 @@ Package: TMExplorer
 Title: 
     A Collection of Tumour Microenvironment Single-cell RNA Sequencing Datasets 
     and Corresponding Metadata 
+<<<<<<< HEAD
 Version: 1.3.2
+=======
+Version: 1.4.0
+>>>>>>> upstream/RELEASE_3_14
 Authors@R: 
     c(person(given = "Erik",
             family = "Christensen",
